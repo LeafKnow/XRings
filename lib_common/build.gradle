@@ -1,0 +1,33 @@
+apply plugin: 'com.android.library'
+//添加插件
+//apply plugin: 'me.tatarka.retrolambda'
+android {
+    compileSdkVersion 26
+    defaultConfig {
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
+
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    buildToolsVersion '27.0.3'
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    //android 用库
+    compile rootProject.ext.dependencies.appcompatV7
+    compile rootProject.ext.dependencies.design
+    compile rootProject.ext.dependencies.constraint_layout
+    compile rootProject.ext.dependencies.recyclerview
+    //lambda表达式
+    // compile rootProject.ext.dependencies.lambda
+    compile project(':lib_base')
+    compile project(':lib_ret')
+}

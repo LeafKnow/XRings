@@ -1,0 +1,98 @@
+import java.util.regex.Matcher
+import java.util.regex.Pattern
+
+ext {
+    //app配置
+    app = [
+            appVerCode       : 1,
+            appVerName       : "0.0.1" + "-${releaseTime()}",
+            applicationId    : "com.yj.njh.action",
+            versionNameSuffix: getCurrentVersionSuffix(),
+            minSdkVersion    : 15
+    ]
+
+
+    android = [
+            minSdkVersion             : 15,
+            targetSdkVersion          : 26,
+            compileSdkVersion         : 26,
+            buildToolsVersion         : "27.0.3",
+            sourceCompatibilityVersion: JavaVersion.VERSION_1_8,
+            targetCompatibilityVersion: JavaVersion.VERSION_1_8
+    ]
+
+    store = [
+            storeKey     : '../doc//key/Ckey.jks',
+            storePassword: '20171110',
+            keyAlias     : 'key0',
+            keyPassword  : '20171110'
+    ]
+
+    dependencies = [
+            appcompatV7                : 'com.android.support:appcompat-v7:26.+',
+            design                     : 'com.android.support:design:26.+',
+            support_annotations        :'com.android.support:support-annotations:22.2.0',
+            recyclerview               :'com.android.support:recyclerview-v7:26.+',
+            //recyclerview DiffUtil是support-v7:24.2.0中的新工具类，它用来比较两个数据集，寻找出旧数据集
+            aspectJ                    : 'org.aspectj:aspectjrt:1.8.9',
+            multidex                   :'com.android.support:multidex:1.0.0',
+            //方法数超过655之数进行分DEX
+            lambda                     :'me.tatarka:gradle-retrolambda:3.2.5',
+            //lambda表达式
+            constraint_layout          :'com.android.support.constraint:constraint-layout:1.0.2',
+            rxjava2                    :'io.reactivex.rxjava2:rxjava:2.1.0',
+            /*RxJava*/
+            rxandroid                  :'io.reactivex.rxjava2:rxandroid:2.0.1',
+            /*RxAndroid*/
+            rxlifecycle2               :'com.trello.rxlifecycle2:rxlifecycle:2.1.0',
+            rxlifecycle_components     :'com.trello.rxlifecycle2:rxlifecycle-components:2.1.0',
+            /*Rx生命周期管理*/
+            retrofit                   :'com.squareup.retrofit2:retrofit:2.3.0',
+            converter_gson             :'com.squareup.retrofit2:converter-gson:2.3.0',
+            adapter_rxjava2            :'com.squareup.retrofit2:adapter-rxjava2:2.3.0',
+            logging_interceptor        :'com.squareup.okhttp3:logging-interceptor:3.8.0',
+            /*网络请求框架*/
+            butterknife                :'com.jakewharton:butterknife:8.8.1',
+            butterknife_compiler       :'com.jakewharton:butterknife-compiler:8.8.1',
+            /*视图注解*/
+            easypermissions            :'pub.devrel:easypermissions:0.4.2',
+            /*动态权限*/
+            swipebackhelper            :'com.jude:swipebackhelper:3.1.2'
+            /*侧滑关闭activity https://github.com/Jude95/SwipeBackHelper*/
+
+
+    ]
+
+
+}
+
+def static releaseTime() {
+    return new Date().format("yyyyMMdd", TimeZone.getTimeZone("GMT+8"))
+}
+
+def getCurrentVersionSuffix() {
+    def currentFlavor = getCurrentFlavor()
+    if (currentFlavor == "prod") {
+        return "-prod"
+    } else if (currentFlavor == "uat") {
+        return "-uat"
+    } else if (currentFlavor == "dev") {
+        return "-dev"
+    }
+}
+
+def getCurrentFlavor() {
+    String taskRequestName = getGradle().getStartParameter().getTaskRequests().toString()
+    Pattern pattern;
+    if (taskRequestName.contains("assemble")) {
+        pattern = Pattern.compile("assemble(\\w+)(Release|Debug)")
+    } else {
+        pattern = Pattern.compile("generate(\\w+)(Release|Debug)")
+    }
+    Matcher matcher = pattern.matcher(taskRequestName)
+    if (matcher.find()) {
+        return matcher.group(1).toLowerCase()
+    } else {
+        return "";
+    }
+}

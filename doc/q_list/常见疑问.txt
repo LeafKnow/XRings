@@ -1,0 +1,6 @@
+
+#.gitignore 添加后无效的解决办法
+// 不要忘了后面的 .
+git rm -r --cached .
+git add .
+git commit -m "comment"
