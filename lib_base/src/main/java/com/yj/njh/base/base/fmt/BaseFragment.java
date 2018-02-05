@@ -10,7 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.jkb.fragment.rigger.annotation.Puppet;
-import com.trello.rxlifecycle2.components.RxFragment;
+import com.trello.rxlifecycle2.components.support.RxFragment;
 
 /**
  * Base fragment.
@@ -22,7 +22,7 @@ import com.trello.rxlifecycle2.components.RxFragment;
  * @since Nov 22,2017
  */
 @Puppet
-public abstract class BaseFragment extends RxFragment  {
+public abstract class BaseFragment extends RxFragment {
 
   protected static final String BUNDLE_KEY = "/bundle/key";
   protected View mContentView;

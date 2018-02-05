@@ -9,10 +9,6 @@ android {
         versionName rootProject.ext.app.versionName
 
     }
-    compileOptions {
-        sourceCompatibility rootProject.ext.android.sourceCompatibilityVersion
-        targetCompatibility rootProject.ext.android.targetCompatibilityVersion
-    }
     buildToolsVersion '27.0.3'
 }
 

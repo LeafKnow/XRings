@@ -1,6 +1,7 @@
 package com.yj.njh.base.base.act;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
@@ -44,7 +45,8 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
         init();
         SwipeBackHelper.onCreate(this);
         SwipeBackHelper.getCurrentPage(this)//获取当前页面
-                .setSwipeBackEnable(isSwipeBackEnable());//设置是否可滑动
+                .setSwipeBackEnable(isSwipeBackEnable())//设置是否可滑动
+                .setScrimColor(Color.TRANSPARENT);//底层阴影颜色;
     }
     protected boolean isSwipeBackEnable() {
         return false;
