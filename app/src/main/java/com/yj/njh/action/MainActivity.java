@@ -1,30 +1,32 @@
 package com.yj.njh.action;
 
+import android.os.Bundle;
+
 import com.jkb.fragment.rigger.annotation.Puppet;
 import com.jkb.fragment.rigger.rigger.Rigger;
-import com.yj.njh.base.base.act.BaseActivity;
+import com.yj.njh.common.base.action.ActionAct;
+
 @Puppet(containerViewId = R.id.fm_content, bondContainerView = true)
-public class MainActivity extends BaseActivity{
-
-
-    @Override
-    protected int getContentViewId() {
-        return R.layout.activity_main;
-    }
+public class MainActivity extends ActionAct {
 
     @Override
-    protected void init() {
+    public void initBus() {
 
     }
 
     @Override
-    protected boolean isSwipeBackEnable() {
-        return false;
+    public void initData(Bundle savedInstanceState) {
+
     }
 
     @Override
-    protected void initBundleData() {
+    public void setListener() {
         Rigger.getRigger(this).startFragment(BlankFragment.newInstance());
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
     }
 
 }

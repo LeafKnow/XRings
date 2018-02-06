@@ -27,8 +27,12 @@ dependencies {
     compile rootProject.ext.dependencies.design
     compile rootProject.ext.dependencies.constraint_layout
     compile rootProject.ext.dependencies.recyclerview
+    compile rootProject.ext.dependencies.otto
+    compile rootProject.ext.dependencies.rxbinding
     //lambda表达式
     // compile rootProject.ext.dependencies.lambda
     compile project(':lib_base')
     compile project(':lib_ret')
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
+    compile 'com.android.support:support-v4:26.1.0'
 }

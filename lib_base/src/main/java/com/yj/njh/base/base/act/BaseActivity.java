@@ -25,29 +25,29 @@ import pub.devrel.easypermissions.EasyPermissions;
  *
  * @author ZhongDaFeng
  */
-public abstract class BaseActivity extends RxAppCompatActivity implements EasyPermissions.PermissionCallbacks {
+public abstract class BaseActivity extends RxAppCompatActivity
+        implements EasyPermissions.PermissionCallbacks,BaseView{
 
     protected Context mContext;
     protected Unbinder unBinder;
 
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (mListener != null) {
-            mListener.onCreate(savedInstanceState);
-        }
         ActivityStackManager.getManager().push(this);
-        setContentView(getContentViewId());
+        setContentView(getLayoutId());
         mContext = this;
         unBinder = ButterKnife.bind(this);
-        initBundleData();
-        init();
+        initBus();
+        initData(savedInstanceState);
+        setListener();
         SwipeBackHelper.onCreate(this);
         SwipeBackHelper.getCurrentPage(this)//获取当前页面
                 .setSwipeBackEnable(isSwipeBackEnable())//设置是否可滑动
                 .setScrimColor(Color.TRANSPARENT);//底层阴影颜色;
     }
+
     protected boolean isSwipeBackEnable() {
         return false;
     }
@@ -55,6 +55,24 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
         SwipeBackHelper.onPostCreate(this);
+    }
+
+    @Override
+    public Context getContext() {
+        return this;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
+    }
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> list) {
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> list) {
     }
     @Override
     protected void onStart() {
@@ -97,8 +115,9 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
     }
 
     @Override
-    protected void onDestroy() {
+    public void onDestroy() {
         super.onDestroy();
+
         if (mListener != null) {
             mListener.onDestroy();
         }
@@ -109,37 +128,6 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
         SwipeBackHelper.onDestroy(this);
         ActivityStackManager.getManager().remove(this);
     }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-        EasyPermissions.onRequestPermissionsResult(requestCode, permissions, grantResults, this);
-    }
-
-    @Override
-    public void onPermissionsGranted(int requestCode, List<String> list) {
-    }
-
-    @Override
-    public void onPermissionsDenied(int requestCode, List<String> list) {
-    }
-
-    /**
-     * 获取显示view的xml文件ID
-     */
-    protected abstract int getContentViewId();
-
-    /**
-     * 初始化应用程序，设置一些初始化数据,获取数据等操作
-     */
-    protected abstract void init();
-
-    /**
-     * 获取上一个界面传送过来的数据
-     */
-    protected abstract void initBundleData();
-
-
     /**
      * 回调函数
      */
@@ -148,6 +136,4 @@ public abstract class BaseActivity extends RxAppCompatActivity implements EasyPe
     public void setOnLifeCycleListener(LifeCycleListener listener) {
         mListener = listener;
     }
-
-
 }

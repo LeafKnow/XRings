@@ -26,5 +26,7 @@ dependencies {
     //侧滑关闭activity
     compile rootProject.ext.dependencies.swipebackhelper
 
+    /*utilcode 常用工具类*/
+    compile rootProject.ext.dependencies.utilcode
     compile project(':lib_fragment_rigger')
 }
