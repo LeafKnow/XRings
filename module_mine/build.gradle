@@ -1,0 +1,93 @@
+if(rootProject.ext.isModule){
+    apply plugin: "com.android.application"
+}else{
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'com.jakewharton.butterknife'
+//apply plugin: 'me.tatarka.retrolambda'
+apply plugin: 'android-aspectjx'
+android {
+    compileSdkVersion rootProject.ext.android.compileSdkVersion
+    buildToolsVersion rootProject.ext.android.buildToolsVersion
+
+    defaultConfig {
+        if(rootProject.ext.isModule){
+            applicationId "com.yj.njh.mine"
+        }
+        minSdkVersion rootProject.ext.android.minSdkVersion
+        targetSdkVersion rootProject.ext.android.targetSdkVersion
+        versionCode rootProject.ext.app.versionCode
+        versionName rootProject.ext.app.versionName
+
+//        jackOptions {
+//            enabled false
+//        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [moduleName: project.getName()]
+            }
+        }
+    }
+//    compileOptions {
+//        sourceCompatibility rootProject.ext.android.sourceCompatibilityVersion
+//        targetCompatibility rootProject.ext.android.targetCompatibilityVersion
+//    }
+    signingConfigs {
+        myConfig {
+            storeFile file(rootProject.ext.store.storeKey)
+            storePassword rootProject.ext.store.storePassword
+            keyAlias rootProject.ext.store.keyAlias
+            keyPassword rootProject.ext.store.keyPassword
+            v2SigningEnabled false
+        }
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled true
+            //是否清理无用资源
+            shrinkResources false
+            //是否启用zipAlign压缩
+            zipAlignEnabled false
+            signingConfig signingConfigs.myConfig
+            versionNameSuffix rootProject.ext.app.versionNameSuffix
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField("boolean", "IS_DEBUG", 'false')
+        }
+        debug {
+            minifyEnabled false
+            //是否清理无用资源
+            shrinkResources false
+            //是否启用zipAlign压缩
+            zipAlignEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.myConfig
+            versionNameSuffix rootProject.ext.app.versionNameSuffix
+            buildConfigField("boolean", "IS_DEBUG", 'true')
+        }
+    }
+
+    lintOptions {//lint检测是否开启/关闭
+        abortOnError false
+    }
+    sourceSets {
+        main {
+            if (rootProject.ext.isModule) {
+                manifest.srcFile 'src/main/debug/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/release/AndroidManifest.xml'
+                java {
+                    exclude 'debug/**'
+                }
+            }
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    compile project(':lib_common')
+    annotationProcessor rootProject.ext.dependencies.butterknife_compiler
+    annotationProcessor rootProject.ext.dependencies.arouter_compiler
+
+}

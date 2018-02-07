@@ -1,1 +1,1 @@
-include ':app', ':lib_base', ':lib_ret', ':lib_common', ':lib_fragment_rigger'
+include ':app', ':lib_base', ':lib_ret', ':lib_common', ':lib_fragment_rigger', ':module_mine'

@@ -2,6 +2,7 @@ import java.util.regex.Matcher
 import java.util.regex.Pattern
 
 ext {
+    isModule=true;//false:作为Lib组件存在， true:作为application存在
     //app配置
     app = [
             appVerCode       : 1,
@@ -20,7 +21,6 @@ ext {
             sourceCompatibilityVersion: JavaVersion.VERSION_1_8,
             targetCompatibilityVersion: JavaVersion.VERSION_1_8
     ]
-
     store = [
             storeKey     : '../doc//key/Ckey.jks',
             storePassword: '20171110',
@@ -33,6 +33,8 @@ ext {
             design                     : 'com.android.support:design:26.+',
             support_annotations        :'com.android.support:support-annotations:22.2.0',
             recyclerview               :'com.android.support:recyclerview-v7:26.+',
+            constraint_layout          :'com.android.support.constraint:constraint-layout:1.0.2',
+            supportV4                  :'com.android.support:support-v4:26.1.0',
             //recyclerview DiffUtil是support-v7:24.2.0中的新工具类，它用来比较两个数据集，寻找出旧数据集
             aspectJ                    : 'org.aspectj:aspectjrt:1.8.9',
             multidex                   :'com.android.support:multidex:1.0.0',
@@ -63,9 +65,10 @@ ext {
             /*侧滑关闭activity https://github.com/Jude95/SwipeBackHelper*/
             /*视图注解*/
             utilcode                   :'com.blankj:utilcode:1.12.5',
+            /*常用工具类*/
             otto                       :'com.squareup:otto:1.3.8',
-
-
+            arouter_api                :'com.alibaba:arouter-api:1.3.1',
+            arouter_compiler           :'com.alibaba:arouter-compiler:1.1.4'
 
     ]
 

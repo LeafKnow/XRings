@@ -14,6 +14,8 @@ import com.yj.njh.ret.http.observer.HttpRxObservable;
 
 import java.lang.ref.Reference;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.reactivex.Observable;
 
@@ -26,7 +28,7 @@ public class ActionsCreator<V extends BaseView,T extends LifeCycleListener> impl
     protected V mView;
     protected Reference<T> mActivityRef;
     protected T mActivity;
-
+    Map<String,Sniffer> snifferMap=new HashMap<>();
     protected final Dispatcher dispatcher;
     protected final long RETRY_TIMES = 0;
     public ActionsCreator(Dispatcher dispatcher,V v) {
@@ -38,13 +40,16 @@ public class ActionsCreator<V extends BaseView,T extends LifeCycleListener> impl
 //        setListener(t);
     }
     protected void reqDate(Observable apiObservable, BaseActivity activity, boolean isShow, final String tag){
+        snifferMap.put(tag,new Sniffer(dispatcher,mView,isShow,tag));
         HttpRxObservable.getObservable(apiObservable, activity)
-                .subscribe(new Sniffer(dispatcher,mView,isShow,tag));
+                .subscribe(snifferMap.get(tag));
     }
     protected void reqDate(Observable apiObservable, BaseFragment fragment, boolean isShow, final String tag){
+        snifferMap.put(tag,new Sniffer(dispatcher,mView,isShow,tag));
         HttpRxObservable.getObservable(apiObservable, fragment)
-                .subscribe(new Sniffer(dispatcher,mView,isShow,tag));
+                .subscribe(snifferMap.get(tag));
     }
+
     /**
      * 设置生命周期监听
      *

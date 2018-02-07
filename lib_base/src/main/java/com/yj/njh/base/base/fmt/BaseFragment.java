@@ -12,6 +12,9 @@ import com.trello.rxlifecycle2.components.support.RxFragment;
 import com.yj.njh.base.base.act.BaseView;
 import com.yj.njh.base.listener.LifeCycleListener;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
+
 /**
  * Base fragment.
  *
@@ -27,7 +30,7 @@ public abstract class BaseFragment extends RxFragment implements BaseView {
   protected static final String BUNDLE_KEY = "/bundle/key";
   protected View mContentView;
   protected Context mContext;
-
+  protected Unbinder unBinder;
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
@@ -40,6 +43,7 @@ public abstract class BaseFragment extends RxFragment implements BaseView {
                            @Nullable Bundle savedInstanceState) {
     super.onCreateView(inflater, container, savedInstanceState);
     mContentView = inflater.inflate(getLayoutId(), container, false);
+    unBinder = ButterKnife.bind(this,mContentView);
     return mContentView;
   }
 
@@ -101,6 +105,10 @@ public abstract class BaseFragment extends RxFragment implements BaseView {
     super.onDestroy();
     if (mListener != null) {
       mListener.onDestroy();
+    }
+    //移除view绑定
+    if (unBinder != null) {
+      unBinder.unbind();
     }
   }
 

@@ -1,5 +1,5 @@
 apply plugin: 'com.android.application'
-apply plugin: 'me.tatarka.retrolambda'
+//apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-aspectjx'
 
 android {
@@ -14,16 +14,15 @@ android {
         versionCode rootProject.ext.app.versionCode
         versionName rootProject.ext.app.versionName
 
-        jackOptions {
-            enabled false
+//        jackOptions {
+//            enabled false
+//        }
+        javaCompileOptions {
+            annotationProcessorOptions {
+                arguments = [ moduleName : project.getName() ]
+            }
         }
     }
-
-    compileOptions {
-        sourceCompatibility rootProject.ext.android.sourceCompatibilityVersion
-        targetCompatibility rootProject.ext.android.targetCompatibilityVersion
-    }
-
 
     signingConfigs {
         myConfig {
@@ -67,8 +66,13 @@ android {
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile project(':lib_common')
-    compile rootProject.ext.dependencies.support_annotations
-    compile 'com.android.support:support-v4:26.1.0'
+    if(rootProject.ext.isModule){
+        compile project(':lib_common')
+    }else{
+        compile project(':module_mine')
+    }
+
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
+    annotationProcessor rootProject.ext.dependencies.arouter_compiler
+
 }
