@@ -35,6 +35,9 @@ dependencies {
     compile rootProject.ext.dependencies.support_annotations
     compile rootProject.ext.dependencies.constraint_layout
     compile rootProject.ext.dependencies.supportV4
+
+    //SmartRefreshLayout 通用刷新库
+    compile rootProject.ext.dependencies.SmartRefreshLayout
     //lambda表达式
     // compile rootProject.ext.dependencies.lambda
     compile project(':lib_base')
