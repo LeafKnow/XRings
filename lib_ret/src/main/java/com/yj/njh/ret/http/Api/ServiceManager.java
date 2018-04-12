@@ -3,6 +3,7 @@ package com.yj.njh.ret.http.Api;
 import android.support.v4.util.ArrayMap;
 
 import com.yj.njh.ret.http.retrofit.RetrofitUtils;
+import com.yj.njh.ret.http.retrofit.RetrofitUtils1;
 
 /**
  * Created by xdj on 16/3/14.
@@ -20,6 +21,16 @@ public class ServiceManager {
 
         return (T) service;
     }
+    public static <T> T create1(Class<T> serviceClass) {
+        Object service = mServiceMap.get(serviceClass);
+        if (service == null) {
+            service = RetrofitUtils1.get().retrofit().create(serviceClass);
+            mServiceMap.put(serviceClass, service);
+        }
+
+        return (T) service;
+    }
+
     public static <T> T defCreate(){
         return (T) create(ApiService.class);
     }

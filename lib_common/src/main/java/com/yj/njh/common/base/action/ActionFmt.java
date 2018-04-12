@@ -8,6 +8,7 @@ import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.trello.rxlifecycle2.android.FragmentEvent;
 import com.yj.njh.base.base.fmt.BaseFragment;
@@ -125,5 +126,8 @@ public abstract class ActionFmt extends BaseFragment {
                 showToast(msg);
             }
         }
+    }
+    public ActionFmt getFragment(String fTag){
+        return (ActionFmt) ARouter.getInstance().build(fTag).navigation();
     }
 }

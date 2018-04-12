@@ -3,6 +3,7 @@ package com.yj.njh.base.base.act;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 import com.jude.swipbackhelper.SwipeBackHelper;
 import com.trello.rxlifecycle2.components.support.RxAppCompatActivity;
@@ -35,6 +36,9 @@ public abstract class BaseActivity extends RxAppCompatActivity
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().hide();
+        int flag = WindowManager.LayoutParams.FLAG_FULLSCREEN;
+        getWindow().setFlags(flag,flag);
         ActivityStackManager.getManager().push(this);
         setContentView(getLayoutId());
         mContext = this;

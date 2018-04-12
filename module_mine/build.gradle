@@ -1,6 +1,6 @@
-if(rootProject.ext.isModule){
+if (rootProject.ext.isModule) {
     apply plugin: "com.android.application"
-}else{
+} else {
     apply plugin: 'com.android.library'
 }
 apply plugin: 'com.jakewharton.butterknife'
@@ -11,7 +11,7 @@ android {
     buildToolsVersion rootProject.ext.android.buildToolsVersion
 
     defaultConfig {
-        if(rootProject.ext.isModule){
+        if (rootProject.ext.isModule) {
             applicationId "com.yj.njh.mine"
         }
         minSdkVersion rootProject.ext.android.minSdkVersion
@@ -44,25 +44,29 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
-            //是否清理无用资源
-            shrinkResources false
-            //是否启用zipAlign压缩
-            zipAlignEnabled false
-            signingConfig signingConfigs.myConfig
-            versionNameSuffix rootProject.ext.app.versionNameSuffix
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (rootProject.ext.isModule) {
+                minifyEnabled true
+                //是否清理无用资源
+                shrinkResources false
+                //是否启用zipAlign压缩
+                zipAlignEnabled false
+                signingConfig signingConfigs.myConfig
+                versionNameSuffix rootProject.ext.app.versionNameSuffix
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            }
             buildConfigField("boolean", "IS_DEBUG", 'false')
         }
         debug {
-            minifyEnabled false
-            //是否清理无用资源
-            shrinkResources false
-            //是否启用zipAlign压缩
-            zipAlignEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            signingConfig signingConfigs.myConfig
-            versionNameSuffix rootProject.ext.app.versionNameSuffix
+            if (rootProject.ext.isModule) {
+                minifyEnabled false
+                //是否清理无用资源
+                shrinkResources false
+                //是否启用zipAlign压缩
+                zipAlignEnabled false
+                proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+                signingConfig signingConfigs.myConfig
+                versionNameSuffix rootProject.ext.app.versionNameSuffix
+            }
             buildConfigField("boolean", "IS_DEBUG", 'true')
         }
     }
@@ -87,6 +91,8 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     compile project(':lib_common')
+    compile 'com.android.support:support-v4:26.1.0'
+    compile 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     annotationProcessor rootProject.ext.dependencies.arouter_compiler
 

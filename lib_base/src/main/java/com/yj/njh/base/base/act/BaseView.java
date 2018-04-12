@@ -2,6 +2,7 @@ package com.yj.njh.base.base.act;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 
 /**
  * Created by niejiahuan
@@ -12,7 +13,7 @@ public interface BaseView {
     void initData(Bundle savedInstanceState);
 
     void setListener();
-
+    @LayoutRes
     int getLayoutId();
 
     Context getContext();

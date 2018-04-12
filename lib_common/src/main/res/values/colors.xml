@@ -4,5 +4,6 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
 
+    <color name="bg_tab">#666666</color>
     <color name="transparent">#01000000</color>
 </resources>

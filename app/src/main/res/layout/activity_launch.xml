@@ -4,14 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/white"
-    tools:context="com.yj.njh.action.MainActivity">
-
- <FrameLayout
-     android:id="@+id/fm_content"
-     android:layout_width="match_parent"
-     android:layout_height="wrap_content">
-
- </FrameLayout>
+    tools:context="com.yj.njh.action.ui.launch.LaunchAct">
 
 </android.support.constraint.ConstraintLayout>

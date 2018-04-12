@@ -1,11 +1,13 @@
 package com.yj.njh.common.base.action;
 
 import android.app.ProgressDialog;
+import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Toast;
 
+import com.alibaba.android.arouter.launcher.ARouter;
 import com.jakewharton.rxbinding2.view.RxView;
 import com.trello.rxlifecycle2.android.ActivityEvent;
 import com.yj.njh.base.base.act.BaseActivity;
@@ -121,5 +123,7 @@ public abstract class ActionAct extends BaseActivity {
             }
         }
     }
-
+    public Fragment getFragment(String fTag){
+        return (Fragment) ARouter.getInstance().build(fTag).navigation();
+    }
 }

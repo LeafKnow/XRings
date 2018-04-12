@@ -3,7 +3,8 @@
     package="com.yj.njh.mine">
 
     <application>
-        <activity android:name=".ui.act.LoginAct"></activity>
+        <activity android:name=".ui.act.LoginAct" />
+        <activity android:name=".ui.act.MainAct"></activity>
     </application>
 
 </manifest>

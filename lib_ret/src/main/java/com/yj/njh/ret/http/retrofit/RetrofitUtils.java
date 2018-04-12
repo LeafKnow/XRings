@@ -23,7 +23,7 @@ public class RetrofitUtils {
     /**
      * 接口地址
      */
-    static final String TEST = "http://apicloud.mob.com/";
+    static final String TEST = "http://i.api.murendao.com/api_i1A5o3P/";
     static final String RELEASE = "http://hz.chengmi.la/";
 
     public static final String BASE_URL = TEST;

@@ -31,11 +31,11 @@ public class HttpRxObservable {
      *
      * @author ZhongDaFeng
      */
-    public static Observable getObservable(Observable<HttpResponse> apiObservable) {
+    public static Observable getObservable(Observable apiObservable) {
        // showLog(request);
         Observable observable = apiObservable
-                .map(new ServerResultFunction())
-                .onErrorResumeNext(new HttpResultFunction<>())
+//                .map(new ServerResultFunction())
+//                .onErrorResumeNext(new HttpResultFunction<>())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
         return observable;
@@ -52,16 +52,16 @@ public class HttpRxObservable {
      *
      * @author ZhongDaFeng
      */
-    public static Observable getObservable(Observable<HttpResponse> apiObservable, LifecycleProvider lifecycle) {
+    public static Observable getObservable(Observable apiObservable, LifecycleProvider lifecycle) {
         //showLog(request);
         Observable observable;
 
         if (lifecycle != null) {
             //随生命周期自动管理.eg:onCreate(start)->onStop(end)
             observable =apiObservable
-                    .map(new ServerResultFunction())
+//                    .map(new ServerResultFunction())
                     .compose(lifecycle.bindToLifecycle())//需要在这个位置添加
-                    .onErrorResumeNext(new HttpResultFunction<>())
+//                    .onErrorResumeNext(new HttpResultFunction<>())
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread());
         } else {

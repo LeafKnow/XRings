@@ -21,6 +21,25 @@ public class LoginStore extends Store {
     public void login(HashMap<String, Object> data) {
         emitStoreChange("login", data);
     }
-
+    @BindAction("getnewlist")
+    public void getnewlist(HashMap<String, Object> data) {
+        emitStoreChange("getnewlist", data);
+    }
+    @BindAction("getHotTopic")
+    public void getHotTopic(HashMap<String, Object> data) {
+        emitStoreChange("getHotTopic", data);
+    }
+    @BindAction("select")
+    public void selectInfo(HashMap<String, Object> data) {
+        emitStoreChange("select", data);
+    }
+    @BindAction("getvideoTitleInfo")
+    public void getvideoTitleInfo(HashMap<String, Object> data) {
+        emitStoreChange("getvideoTitleInfo", data);
+    }
+    @BindAction("getvideoListInfo")
+    public void getvideoListInfo(HashMap<String, Object> data) {
+        emitStoreChange("getvideoListInfo", data);
+    }
 
 }

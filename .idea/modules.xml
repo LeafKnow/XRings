@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/XRingsTV.iml" filepath="$PROJECT_DIR$/XRingsTV.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_base/lib_base.iml" filepath="$PROJECT_DIR$/lib_base/lib_base.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_common/lib_common.iml" filepath="$PROJECT_DIR$/lib_common/lib_common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_fragment_rigger/lib_fragment_rigger.iml" filepath="$PROJECT_DIR$/lib_fragment_rigger/lib_fragment_rigger.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_ret/lib_ret.iml" filepath="$PROJECT_DIR$/lib_ret/lib_ret.iml" />
+      <module fileurl="file://$PROJECT_DIR$/lib_widget/lib_widget.iml" filepath="$PROJECT_DIR$/lib_widget/lib_widget.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_home/module_home.iml" filepath="$PROJECT_DIR$/module_home/module_home.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_main/module_main.iml" filepath="$PROJECT_DIR$/module_main/module_main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_mine/module_mine.iml" filepath="$PROJECT_DIR$/module_mine/module_mine.iml" />
+      <module fileurl="file://$PROJECT_DIR$/module_shopping_cart/module_shopping_cart.iml" filepath="$PROJECT_DIR$/module_shopping_cart/module_shopping_cart.iml" />
+      <module fileurl="file://$PROJECT_DIR$/tvwidget/tvwidget.iml" filepath="$PROJECT_DIR$/tvwidget/tvwidget.iml" />
+    </modules>
+  </component>
+</project>

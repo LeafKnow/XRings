@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/view_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/fl_tab_container"
+        android:layout_width="match_parent"
+        android:background="#999999"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+        <com.yj.njh.widget.bom.BottomBar
+            android:id="@+id/btnbar"
+            android:layout_width="match_parent"
+            android:layout_height="52dp">
+        </com.yj.njh.widget.bom.BottomBar>
+</LinearLayout>

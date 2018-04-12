@@ -39,4 +39,5 @@ dependencies {
 
     /*utilcode 常用工具类*/
     compile rootProject.ext.dependencies.utilcode
+
 }
