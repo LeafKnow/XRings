@@ -48,12 +48,24 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.search.SearchActivity"></activity>
-        <activity android:name=".ui.vlist.VideoListActivity"></activity>
-        <activity android:name=".ui.vlist.details.MovieDetailsActivity"></activity>
-        <activity android:name=".ui.history.HistoryActivity"></activity>
-        <activity android:name=".ui.favoritery.FavoritesActivity"></activity>
-        <activity android:name=".ui.vlist.details.MovieDetailsActivity2"></activity>
+        <activity android:name=".ui.search.SearchActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.vlist.VideoListActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.vlist.details.MovieDetailsActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.history.HistoryActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.favoritery.FavoritesActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.vlist.details.MovieDetailsActivity2"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.TJDetailsActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.mm.MmListActivity"
+            android:screenOrientation="sensorLandscape"></activity>
+        <activity android:name=".ui.PlayEmptyControlActivity"
+            android:screenOrientation="sensorLandscape"></activity>
     </application>
 
 </manifest>

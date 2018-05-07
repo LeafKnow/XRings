@@ -1,4 +1,4 @@
-package com.yj.njh.action.ui.adapter;
+package com.yj.njh.action.ui.mm.adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -9,7 +9,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.LogUtils;
 import com.yj.njh.action.R;
-import com.yj.njh.ret.http.bean.LMClassBean;
+import com.yj.njh.ret.http.bean.HotTopicTjBean;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ import java.util.List;
 public class ConditionsAdapter extends BaseAdapter {
 
     private static final String TAG = "ConditionsAdapter";
-    private List<LMClassBean> conditionsArrayList;
+    private List<HotTopicTjBean> conditionsArrayList;
     private Context context;
     private boolean isParam = true;
     private int point = 0;
@@ -29,7 +29,7 @@ public class ConditionsAdapter extends BaseAdapter {
         this.point = point;
     }
 
-    public ConditionsAdapter(List<LMClassBean> conditionsArrayList, Context context) {
+    public ConditionsAdapter(List<HotTopicTjBean> conditionsArrayList, Context context) {
         this.conditionsArrayList = conditionsArrayList;
         this.context = context;
     }
@@ -60,7 +60,7 @@ public class ConditionsAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        LMClassBean queryConditions = conditionsArrayList.get(position);
+        HotTopicTjBean queryConditions = conditionsArrayList.get(position);
         holder.lemon_video_tv.setText(queryConditions.getName());
         if (position == point) {
             LogUtils.i(TAG,"白色" + position);

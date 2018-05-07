@@ -1,4 +1,4 @@
-package com.yj.njh.action.ui.vlist.details;
+package com.yj.njh.action.ui;
 
 import android.graphics.Color;
 import android.graphics.Rect;
@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.ViewTreeObserver;
 import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -21,9 +20,7 @@ import com.lemon95.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.lemon95.androidtvwidget.bridge.OpenEffectBridge;
 import com.lemon95.androidtvwidget.view.GridViewTV;
 import com.lemon95.androidtvwidget.view.LabelView;
-import com.lemon95.androidtvwidget.view.MainLayout;
 import com.lemon95.androidtvwidget.view.MainUpView;
-import com.lemon95.androidtvwidget.view.ReflectItemView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.common.AppConstant;
 import com.yj.njh.action.common.PreferenceUtils;
@@ -39,9 +36,8 @@ import java.util.List;
 /**
  * Created by WXT on 2016/7/18.
  */
-public class MovieDetailsActivity extends BaseFluxActivity implements View.OnClickListener{
+public class TJDetailsActivity extends BaseFluxActivity implements View.OnClickListener{
 
-    private ReflectItemView details_play,details_serial,details_sc;
     private MainUpView mainUpView2;
     View mOldFocus; // 4.3以下版本需要自己保存.
     OpenEffectBridge mOpenEffectBridge;
@@ -84,7 +80,7 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_moviedetails;
+        return R.layout.activity_tjdetails;
     }
 
     @Override
@@ -121,8 +117,6 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
         lemon_movie_details_pro = (ProgressBar)findViewById(R.id.lemon_movie_details_pro);
         lemon_movie_details_main = (LinearLayout)findViewById(R.id.lemon_movie_details_main);
-        details_serial = (ReflectItemView) findViewById(R.id.details_serial);
-        details_sc = (ReflectItemView) findViewById(R.id.details_sc);
         lemon_image_icon = (LabelView) findViewById(R.id.lemon_image_icon);
 //        dataBaseDao = new DataBaseDao(context);
     }
@@ -140,27 +134,8 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
             lemon_image_icon.setVisibility(View.GONE);
         }
         TextView textView = (TextView)findViewById(R.id.lemon95_movie_title_id);
-//        LogUtils.i(TAG, videoId + ";" + userId);
-        textView.setText("名牧");
-        if (AppConstant.MOVICE.equals(videoType)) {
-            textView.setText(getString(R.string.lemon95_movie));
-//            movieDetailsActivity.initPageData(videoId, userId,isPersonal);
-            details_serial.setVisibility(View.GONE);
-        } else if(AppConstant.SERIALS.equals(videoType)) {
-            textView.setText("电视剧");
-            details_serial.setVisibility(View.VISIBLE);
-//            movieDetailsActivity.initSerialData(videoId,userId);
-        }
-//        else if ( AppConstant.ZONGYI.equals(videoType)) {
-//            textView.setText("综艺");
-//            details_serial.setVisibility(View.VISIBLE);
-////            movieDetailsActivity.initSerialData(videoId,userId);
-//        } else if ( AppConstant.DONGMAN.equals(videoType)) {
-//            textView.setText("动漫");
-//            details_serial.setVisibility(View.VISIBLE);
-//            movieDetailsActivity.initSerialData(videoId,userId);
-//        }
-        listBean= (HotTopicTjBean) getIntent().getSerializableExtra("videoInfo");
+
+        HotTopicTjBean listBean= (HotTopicTjBean) getIntent().getSerializableExtra("tjInfo");
         initViewSerialDate(listBean);
     }
 
@@ -173,29 +148,22 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
             mainUpView2.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
             mainUpView2.setShadowResource(R.drawable.item_shadow); // 设置移动边框的阴影.
         }*/
-        MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay);
-        main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
-            @Override
-            public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
-                if (newFocus != null)
-                    newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
-                float scale = 1.1f;
-                mainUpView2.setFocusView(newFocus, mOldFocus, scale);
-                mOldFocus = newFocus; // 4.3以下需要自己保存.
-                // 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
-                /*if (newFocus != null) {
-                    testTopDemo(newFocus, scale);
-                }*/
-                LogUtils.i("getViewTreeObserver","大小改变");
-            }
-        });
-        //初始化焦点
-        details_play = (ReflectItemView)findViewById(R.id.details_play);
-        mainUpView2.setFocusView(details_play, mOldFocus, 1.1f);
-        mOldFocus = details_play;
-        details_play.setFocusableInTouchMode(true);
-        details_play.requestFocus();
-        details_play.setFocusable(true);
+//        MainLayout main_lay11 = (MainLayout) findViewById(R.id.main_lay);
+//        main_lay11.getViewTreeObserver().addOnGlobalFocusChangeListener(new ViewTreeObserver.OnGlobalFocusChangeListener() {
+//            @Override
+//            public void onGlobalFocusChanged(final View oldFocus, final View newFocus) {
+//                if (newFocus != null)
+//                    newFocus.bringToFront(); // 防止放大的view被压在下面. (建议使用MainLayout)
+//                float scale = 1.1f;
+//                mainUpView2.setFocusView(newFocus, mOldFocus, scale);
+//                mOldFocus = newFocus; // 4.3以下需要自己保存.
+//                // 测试是否让边框绘制在下面，还是上面. (建议不要使用此函数)
+//                /*if (newFocus != null) {
+//                    testTopDemo(newFocus, scale);
+//                }*/
+//                LogUtils.i("getViewTreeObserver","大小改变");
+//            }
+//        });
         mOpenEffectBridge.setVisibleWidget(false);
         mainUpView2.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
     }
@@ -272,13 +240,6 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
     }
 
     private void initOnclick() {
-        details_play.setOnClickListener(this);
-        details_serial.setOnClickListener(this);
-
-        details_play.setVisibility(View.GONE);
-        details_serial.setVisibility(View.GONE);
-        details_sc.setVisibility(View.GONE);
-        details_sc.setOnClickListener(this);
         gridView.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -351,7 +312,27 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
         if (lemon_movie_details_pro.getVisibility() == View.GONE) {
             switch (v.getId()) {
                 case R.id.details_play:
-
+                    Bundle bundle = new Bundle();
+                    if (AppConstant.MOVICE.equals(videoType)) {
+//                        bundle.putString("videoId", data.getId());
+//                        bundle.putString("SerialEpisodeId", "");
+//                        bundle.putBoolean("isPersonal", isPersonal);
+//                        bundle.putString("videoName", data.getMovieName());
+//                        bundle.putString("videoImage",data.getPicturePath());
+                    }
+//                    else if(AppConstant.SERIALS.equals(videoType) || AppConstant.DONGMAN.equals(videoType) || AppConstant.ZONGYI.equals(videoType)) {
+//                        bundle.putString("SerialEpisodeId", serialData.getSerialEpisodes().get(0).getId());  //剧集ID
+//                        bundle.putString("videoId", serialData.getSerialEpisodes().get(0).getSerialId());
+//                        bundle.putString("videoName", serialData.getSerialName());
+//                        bundle.putString("lastEpisode", serialData.getLastEpisode());
+//                       // bundle.putInt("index", index);
+//                        bundle.putString("videoImage", serialData.getPicturePath());
+//                     //   bundle.putParcelableArrayList("SerialEpisodes",serialData.getSerialEpisodes());
+//                    }
+                    bundle.putString("videoType", videoType);
+                  //  startActivity(PlayActivity.class,bundle);
+                  //  startActivity(BdPalyActivity.class,bundle);
+//                    startActivity(IjkPlayerActivity.class,bundle);
                     break;
                 case R.id.details_serial:
                     //选择剧集
@@ -425,7 +406,7 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
 //            }
 //           // ((TextView)findViewById(R.id.lemon95_text_play)).setText("第"+ index +"集");
 //        }
-        ((TextView)findViewById(R.id.movie_details_name)).setText("《" + listBean.getName() + "》");
+        ((TextView)findViewById(R.id.movie_details_name)).setText("" + listBean.getName() + "");
 //        ((TextView)findViewById(R.id.movie_details_type)).setText("类型：" + listBean.getType());
 //        String f = data.getScore();
 //        if (!StringUtils.isEmpty(f)) {
@@ -444,7 +425,7 @@ public class MovieDetailsActivity extends BaseFluxActivity implements View.OnCli
 //        } else {
 //            ((TextView)findViewById(R.id.movie_details_act)).setText("主演：" + zhuyan);
 //        }
-//        ((TextView)findViewById(R.id.movie_details_descri)).setText(Html.fromHtml(listBean.get));
+//        ((TextView)findViewById(R.id.movie_details_descri)).setText(Html.fromHtml(listBean.));
         ImageView imageView = (ImageView)findViewById(R.id.movie_details_img_id);
         Glide.with(this).load(listBean.getPic()).into(imageView);
 //        LogUtils.e(TAG, ImageUtils.getBigImg(data.getPicturePath()));

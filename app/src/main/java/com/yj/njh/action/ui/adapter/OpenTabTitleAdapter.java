@@ -18,8 +18,8 @@ public class OpenTabTitleAdapter extends BaseTabTitleAdapter {
     public OpenTabTitleAdapter() {
 //		for (int i = 0; i < 4; i++) {
         titleList.add("用户");
-        titleList.add("名牧");
         titleList.add("推荐");
+        titleList.add("名牧");
 //        titleList.add("直播");
 //		}
     }

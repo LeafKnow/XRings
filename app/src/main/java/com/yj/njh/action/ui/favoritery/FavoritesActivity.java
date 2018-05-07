@@ -13,16 +13,22 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lemon95.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.lemon95.androidtvwidget.bridge.OpenEffectBridge;
 import com.lemon95.androidtvwidget.view.MainUpView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.common.AppConstant;
-import com.yj.njh.action.model.FavoritesBean;
+import com.yj.njh.action.db.dao.VoideClassTJModelDao;
+import com.yj.njh.action.model.PlayUrlsBean;
+import com.yj.njh.action.model.VoideClassTJModel;
 import com.yj.njh.action.ui.adapter.FavoritesAdapter;
-import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity;
+import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity2;
 import com.yj.njh.action.view.ConfirmDialog;
 import com.yj.njh.common.base.BaseFluxActivity;
+import com.yj.njh.ret.http.bean.VoideClassTJBean;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,12 +42,12 @@ public class FavoritesActivity extends BaseFluxActivity{
     private ProgressBar lemon_movie_details_pro;
     private FavoritesAdapter favoritesAdapter;
     private View mOldView;
-    public List<FavoritesBean.Data> videoList = new ArrayList<>();
+    public List<VoideClassTJModel> videoList = new ArrayList<>();
     private boolean isDelete = true;
     OpenEffectBridge mOpenEffectBridge;
     public int page = 1;
     private boolean isPage = true; //是否在翻页
-    List<FavoritesBean.Data> dataList;
+    List<VoideClassTJModel> dataList;
     private boolean isStart = false;
 
     @Override
@@ -111,7 +117,28 @@ public class FavoritesActivity extends BaseFluxActivity{
         lemon_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FavoritesBean.Data video = videoList.get(position);
+                VoideClassTJModel video = videoList.get(position);
+                VoideClassTJBean voideClassTJBean=new VoideClassTJBean();
+                voideClassTJBean.setId(video.getId());
+                voideClassTJBean.setContent(video.getContent());
+                voideClassTJBean.setDirected(video.getDirected());
+                voideClassTJBean.setHits(video.getHits());
+                voideClassTJBean.setId(video.getId());
+                voideClassTJBean.setLevel(video.getLevel());
+                voideClassTJBean.setPic(video.getPic());
+                voideClassTJBean.setPicslide(video.getPicslide());
+                voideClassTJBean.setName(video.getName());
+                voideClassTJBean.setTime(video.getTime());
+                voideClassTJBean.setTopic(video.getTopic());
+                voideClassTJBean.setStarring(video.getStarring());
+                PlayUrlsBean playUrlsBean = new Gson().fromJson(video.getPlayurls(), PlayUrlsBean.class);
+                voideClassTJBean.setPlayurls(playUrlsBean.getPlayurls());
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("videoInfo", voideClassTJBean);
+                startActivity(new Intent(FavoritesActivity.this, MovieDetailsActivity2.class)
+                        .putExtras(bundle1));
+//            }
+
 //                if (AppConstant.FUNNY.equals(video.getVideoTypeId())) {
 //                    //搞笑
 //                    Bundle bundle = new Bundle();
@@ -121,19 +148,19 @@ public class FavoritesActivity extends BaseFluxActivity{
 //                    bundle.putString("videoType", video.getVideoTypeId());
 //                    startActivity(BdPalyActivity.class, bundle);
 //                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("videoId", video.getVideoId());
-                    bundle.putString("videoType", video.getVideoTypeId());
-                    startActivity(new Intent(FavoritesActivity.this,MovieDetailsActivity.class).putExtras(bundle));
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("videoId", video.getVideoId());
+//                    bundle.putString("videoType", video.getVideoTypeId());
+//                    startActivity(new Intent(FavoritesActivity.this,MovieDetailsActivity.class).putExtras(bundle));
 //                }
             }
         });
         lemon_gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final FavoritesBean.Data video = videoList.get(position);
+            public boolean onItemLongClick(AdapterView<?> parent, View view, final int position, long id) {
+                final VoideClassTJModel video = videoList.get(position);
                 ConfirmDialog.Builder dialog = new ConfirmDialog.Builder(FavoritesActivity.this);
-                dialog.setMessage(video.getVideoName());
+                dialog.setMessage(video.getName());
                 dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -142,8 +169,17 @@ public class FavoritesActivity extends BaseFluxActivity{
                 }).setPositiveButton("删除该片", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-//                        favoritesPresenter.deleteVideo(videoList, video);
                         dialog.dismiss();
+                        VoideClassTJModel voideClassTJModel=new VoideClassTJModel();
+                        QueryBuilder<VoideClassTJModel> voideClassTJModelQueryBuilder = voideClassTJModel.getVoideClassTJBeanDao().queryBuilder();
+                        voideClassTJModelQueryBuilder.where(VoideClassTJModelDao.Properties.Id.eq(video.getId()));
+                        List<VoideClassTJModel> list = voideClassTJModelQueryBuilder.list();
+                        if (list.size()>0){
+                            voideClassTJModel=list.get(0);
+                            voideClassTJModel.getVoideClassTJBeanDao().delete(voideClassTJModel);
+                            videoList.remove(position);
+                            favoritesAdapter.notifyDataSetChanged();
+                        }
                     }
                 });
                 dialog.create().show();
@@ -184,6 +220,10 @@ public class FavoritesActivity extends BaseFluxActivity{
                 }
             }
         });
+        VoideClassTJModel voideClassTJModel=new VoideClassTJModel();
+        QueryBuilder<VoideClassTJModel> voideClassTJModelQueryBuilder = voideClassTJModel.getVoideClassTJBeanDao().queryBuilder();
+        List<VoideClassTJModel> list = voideClassTJModelQueryBuilder.list();
+        showFavoriteData(list);
     }
 
     public boolean isDelete() {
@@ -221,7 +261,7 @@ public class FavoritesActivity extends BaseFluxActivity{
     }
 
     //初始化收藏数据
-    public void showFavoriteData(List<FavoritesBean.Data> listData) {
+    public void showFavoriteData(List<VoideClassTJModel> listData) {
         isPage = true;
         this.dataList = listData;
         if (listData != null) {

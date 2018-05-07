@@ -1,4 +1,4 @@
-package com.yj.njh.action.ui.vlist;
+package com.yj.njh.action.ui.mm;
 
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,27 +22,23 @@ import com.lemon95.androidtvwidget.view.ListViewTV;
 import com.lemon95.androidtvwidget.view.MainUpView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.ui.actions.LoginAction;
-import com.yj.njh.action.ui.adapter.ConditionsAdapter;
-import com.yj.njh.action.ui.adapter.GridViewAdapter;
+import com.yj.njh.action.ui.mm.adapter.ConditionsAdapter;
+import com.yj.njh.action.ui.mm.adapter.GridViewAdapter;
 import com.yj.njh.action.ui.search.SearchActivity;
 import com.yj.njh.action.ui.stores.LoginStore;
-import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity2;
+import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity;
 import com.yj.njh.common.base.BaseFluxActivity;
 import com.yj.njh.common.flux.stores.Store;
-import com.yj.njh.ret.http.Api.PhoneApi1;
-import com.yj.njh.ret.http.Api.ServiceManager;
-import com.yj.njh.ret.http.bean.LMClassBean;
-import com.yj.njh.ret.http.bean.VoideClassTJBean;
-import com.yj.njh.ret.http.bean.VoideInfoListBean;
+import com.yj.njh.ret.http.bean.ClassDataModel;
+import com.yj.njh.ret.http.bean.HotTopicTjBean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import io.reactivex.functions.Consumer;
-
-public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> {
+/**
+ * 名牧
+ */
+public class MmListActivity extends BaseFluxActivity<LoginStore,LoginAction> {
 
     private ListViewTV lemon_video_menu_id;
     private MainUpView mainUpView2;
@@ -55,8 +51,8 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     private View mOldGridView;
     private GridViewTV gridView;
     private GridViewAdapter gridViewAdapter;
-    private List<VoideInfoListBean.ListBean> videoList = new ArrayList<>(); //影片
-    private List<LMClassBean> conditionsArrayList;
+    private List<HotTopicTjBean> videoList = new ArrayList<>(); //影片
+    private List<ClassDataModel.ClassBean> conditionsArrayList;
     private int page = 1;
     private TextView lemon_title;
     private boolean isPage = true; //是否在翻页
@@ -66,7 +62,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     private int point = 0; //gridview 位置
     private TextView lemon_search;
 
-    List<LMClassBean> lmClassBeans;
+    ClassDataModel classDataModel;
     @Override
     protected boolean flux() {
         return true;
@@ -85,7 +81,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
 
     @Override
     public int getLayoutId() {
-        return R.layout.activity_video_list;
+        return R.layout.activity_mm_list;
     }
 
 
@@ -155,7 +151,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
                 mOpenEffectBridge.setVisibleWidget(true); // 隐藏
                 mainUpView2.setUpRectResource(R.drawable.test_rectangle); // 设置移动边框的图片.
 //                videoListPresenter.getCombSearch(queryConditions.getAreaId(), queryConditions.getGenreId(), queryConditions.getGroupId(), queryConditions.getChargeMethod(), queryConditions.getVipLevel(), queryConditions.getYear(), queryConditions.getType(), page + "", AppConstant.PAGESIZE);
-                getvideoListInfo(conditionsArrayList.get(position).getId());
+
             }
         });
         lemon_video_menu_id.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -217,9 +213,8 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
                 Bundle bundle = new Bundle();
-                VoideClassTJBean voideClassTJBean=new VoideClassTJBean(videoList.get(position));
-                bundle.putSerializable("videoInfo",voideClassTJBean);
-                startActivity(new Intent(VideoListActivity.this,MovieDetailsActivity2.class).putExtras(bundle));
+                bundle.putSerializable("videoInfo", videoList.get(position));
+                startActivity(new Intent(MmListActivity.this,MovieDetailsActivity.class).putExtras(bundle));
 //                }
 //                VideoSearchList.Data.VideoBriefs video = videoList.get(position);
 //                if (AppConstant.FUNNY.equals(video.getVideoTypeId())) {
@@ -276,7 +271,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
         lemon_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(VideoListActivity.this,SearchActivity.class));
+                startActivity(new Intent(MmListActivity.this,SearchActivity.class));
             }
         });
         lemon_search.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -322,6 +317,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     public void initialized() {
         String videoType = getIntent().getStringExtra("videoType");
         TextView lemon_movie_title = (TextView)findViewById(R.id.lemon_movie_title);
+        lemon_movie_title.setText("推荐名牧");
 //        if (AppConstant.MOVICE.equals(videoType)) {
 //            lemon_movie_title.setText(getString(R.string.lemon95_movie));
 //        } else if(AppConstant.SERIALS.equals(videoType)) {
@@ -334,22 +330,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
 //            lemon_movie_title.setText("综艺");
 //        }
 //        videoListPresenter.getCombQueryConditions(videoType);
-//        actionsCreator().getvideoTitleInfo(this);
-
-        ServiceManager.create1(PhoneApi1.class).getvideoTitleInfo().subscribe(new Consumer<List<LMClassBean>>() {
-            @Override
-            public void accept(List<LMClassBean> titleInfoBeans) throws Exception {
-                showListView(titleInfoBeans);
-                if (lmClassBeans.size() > 0) {
-                    getvideoListInfo(lmClassBeans.get(0).getId());
-                }
-            }
-        }, new Consumer<Throwable>() {
-            @Override
-            public void accept(Throwable throwable) throws Exception {
-                showToast(throwable.getMessage());
-            }
-        });
+        getvideoListInfo();
     }
 
     public void showPro() {
@@ -393,18 +374,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
         return isKeyDown;
     }
 
-    /**
-     * 显示listView
-//     * @param conditionsArrayList
-     */
-    public void showListView(List<LMClassBean> lmClassBeanList) {
-        this.conditionsArrayList = lmClassBeanList;
-        conditionsAdapter = new ConditionsAdapter(conditionsArrayList, this);
-        lemon_video_menu_id.setAdapter(conditionsAdapter);
-        conditionsAdapter.notifyDataSetChanged();
-        lemon_title.setText(conditionsArrayList.get(0).getName());
-        hidePro();
- }
+
 
     public void showPro2() {
         lemon_movie_details_pro2.setVisibility(View.VISIBLE);
@@ -422,7 +392,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
      * 显示gridView
      * @param data
      */
-    public void showGridView( VoideInfoListBean data) {
+    public void showGridView( List<HotTopicTjBean> data) {
         isPage = true;
         if (data != null) {
           //  gridViewAdapter.notifyDataSetChanged();
@@ -435,9 +405,9 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
                     }
                 });
             }*/
-            totleCount = data.getRecordcount();
+//            totleCount = data.getRecordcount();
             videoList.clear();
-            videoList.addAll(data.getList());
+            videoList.addAll(data);
             gridViewAdapter.notifyDataSetChanged();
             isStart = false;
             /*new Thread(){
@@ -459,24 +429,20 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
         gridView.setSelector(new ColorDrawable(Color.TRANSPARENT));
     }
 
-    public void getvideoListInfo(String t){
-        Map<String,Object> params=new HashMap<>();
-        params.put("t",t);
-        actionsCreator().getvideoListInfo(params,this);
+    public void getvideoListInfo(){
+        //从数据库获取数据
+        actionsCreator().getHotTopic(this);
     }
 
     @Override
     protected void updateView(Store.StoreChangeEvent event) {
         super.updateView(event);
-        if ("getvideotype".equals(event.url)){
-//            lmClassBeans= (List<LMClassBean>) event.data;
-//            showListView(lmClassBeans);
-//            if (lmClassBeans.size()>0) {
-//                getvideoListInfo(lmClassBeans.get(0).getId());
-//            }
-        }else if ("getvideoListInfo".equals(event.url)){
-            VoideInfoListBean classDataModel= (VoideInfoListBean) event.data;
-            showGridView(classDataModel);
+      if ("getHotTopic".equals(event.url)){
+
+            List<HotTopicTjBean>  hotTopicTjBeans= (List<HotTopicTjBean>) event.data;
+            hidePro();
+          lemon_title.setText("推荐名牧");
+            showGridView(hotTopicTjBeans);
         }
     }
 }

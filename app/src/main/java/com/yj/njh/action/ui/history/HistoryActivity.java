@@ -1,6 +1,7 @@
 package com.yj.njh.action.ui.history;
 
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -12,16 +13,22 @@ import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
 import com.lemon95.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.lemon95.androidtvwidget.bridge.OpenEffectBridge;
 import com.lemon95.androidtvwidget.view.MainUpView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.common.AppConstant;
 import com.yj.njh.action.common.PreferenceUtils;
-import com.yj.njh.action.model.WatchHistories;
+import com.yj.njh.action.model.PlayUrlsBean;
+import com.yj.njh.action.model.VoideClassTJBFModel;
 import com.yj.njh.action.ui.adapter.HistoryAdapter;
+import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity2;
 import com.yj.njh.action.view.ConfirmDialog;
 import com.yj.njh.common.base.BaseFluxActivity;
+import com.yj.njh.ret.http.bean.VoideClassTJBean;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,20 +42,20 @@ public class HistoryActivity extends BaseFluxActivity{
     private ProgressBar lemon_movie_details_pro;
     private HistoryAdapter favoritesAdapter;
     private View mOldView;
-    public List<WatchHistories.Data> videoList = new ArrayList<>();
+    public List<VoideClassTJBFModel> videoList = new ArrayList<>();
     private boolean isDelete = true;
     OpenEffectBridge mOpenEffectBridge;
     public int page = 1;
     private boolean isPage = true; //是否在翻页
     public String mac;
     public String userId;
-    List<WatchHistories.Data> dataList;
+    List<VoideClassTJBFModel> dataList;
     private boolean isStart = false;
 //    private DataBaseDao dataBaseDao;
 
     @Override
     public void initData(Bundle savedInstanceState) {
-
+        setupViews();
     }
 
     @Override
@@ -114,29 +121,48 @@ public class HistoryActivity extends BaseFluxActivity{
         lemon_gridview.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                WatchHistories.Data video = videoList.get(position);
-                if (AppConstant.FUNNY.equals(video.getVideoTypeId())) {
-                    //搞笑
-                    Bundle bundle = new Bundle();
-                    bundle.putString("videoId", video.getVideoId());
-                    bundle.putString("SerialEpisodeId", "");
-                    bundle.putString("videoName", video.getTitle());
-                    bundle.putString("videoType", video.getVideoTypeId());
-//                    startActivity(BdPalyActivity.class, bundle);
-                } else {
-                    Bundle bundle = new Bundle();
-                    bundle.putString("videoId", video.getVideoId());
-                    bundle.putString("videoType", video.getVideoTypeId());
-//                    startActivity(MovieDetailsActivity.class, bundle);
-                }
+                VoideClassTJBFModel video = videoList.get(position);
+                VoideClassTJBean voideClassTJBean=new VoideClassTJBean();
+                voideClassTJBean.setId(video.getId());
+                voideClassTJBean.setContent(video.getContent());
+                voideClassTJBean.setDirected(video.getDirected());
+                voideClassTJBean.setHits(video.getHits());
+                voideClassTJBean.setId(video.getId());
+                voideClassTJBean.setLevel(video.getLevel());
+                voideClassTJBean.setPic(video.getPic());
+                voideClassTJBean.setPicslide(video.getPicslide());
+                voideClassTJBean.setName(video.getName());
+                voideClassTJBean.setTime(video.getTime());
+                voideClassTJBean.setTopic(video.getTopic());
+                voideClassTJBean.setStarring(video.getStarring());
+                PlayUrlsBean playUrlsBean = new Gson().fromJson(video.getPlayurls(), PlayUrlsBean.class);
+                voideClassTJBean.setPlayurls(playUrlsBean.getPlayurls());
+                Bundle bundle1 = new Bundle();
+                bundle1.putSerializable("videoInfo", voideClassTJBean);
+                startActivity(new Intent(HistoryActivity.this, MovieDetailsActivity2.class)
+                        .putExtras(bundle1));
+//                if (AppConstant.FUNNY.equals(video.getVideoTypeId())) {
+//                    //搞笑
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("videoId", video.getVideoId());
+//                    bundle.putString("SerialEpisodeId", "");
+//                    bundle.putString("videoName", video.getTitle());
+//                    bundle.putString("videoType", video.getVideoTypeId());
+////                    startActivity(BdPalyActivity.class, bundle);
+//                } else {
+//                    Bundle bundle = new Bundle();
+//                    bundle.putString("videoId", video.getVideoId());
+//                    bundle.putString("videoType", video.getVideoTypeId());
+////                    startActivity(MovieDetailsActivity.class, bundle);
+//                }
             }
         });
         lemon_gridview.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                final WatchHistories.Data video = videoList.get(position);
+                final VoideClassTJBFModel video = videoList.get(position);
                 ConfirmDialog.Builder dialog = new ConfirmDialog.Builder(HistoryActivity.this);
-                dialog.setMessage(video.getTitle());
+                dialog.setMessage(video.getName());
                 dialog.setNegativeButton("取消", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -189,6 +215,13 @@ public class HistoryActivity extends BaseFluxActivity{
                 }
             }
         });
+
+        VoideClassTJBFModel voideClassTJBFModel=new VoideClassTJBFModel();
+        QueryBuilder<VoideClassTJBFModel> voideClassTJBFModelQueryBuilder =
+                voideClassTJBFModel.getVoideClassTJBFModelDao().queryBuilder();
+        List<VoideClassTJBFModel> list = voideClassTJBFModelQueryBuilder.list();
+        showFavoriteData(list);
+
     }
 
     public boolean isDelete() {
@@ -229,7 +262,7 @@ public class HistoryActivity extends BaseFluxActivity{
     }
 
     //初始化观看记录数据
-    public void showFavoriteData(List<WatchHistories.Data> dataList) {
+    public void showFavoriteData(List<VoideClassTJBFModel> dataList) {
         isPage = true;
         this.dataList = dataList;
         if (dataList != null) {

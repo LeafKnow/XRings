@@ -1,5 +1,6 @@
 package com.yj.njh.action.ui.vlist.details;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.LogUtils;
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
+import com.google.gson.Gson;
 import com.lemon95.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.lemon95.androidtvwidget.bridge.OpenEffectBridge;
 import com.lemon95.androidtvwidget.view.GridViewTV;
@@ -28,11 +30,19 @@ import com.lemon95.androidtvwidget.view.ReflectItemView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.common.AppConstant;
 import com.yj.njh.action.common.PreferenceUtils;
+import com.yj.njh.action.db.dao.VoideClassTJBFModelDao;
+import com.yj.njh.action.db.dao.VoideClassTJModelDao;
 import com.yj.njh.action.model.GenresMovie;
 import com.yj.njh.action.model.Movie;
+import com.yj.njh.action.model.PlayUrlsBean;
+import com.yj.njh.action.model.VoideClassTJBFModel;
+import com.yj.njh.action.model.VoideClassTJModel;
+import com.yj.njh.action.ui.PlayEmptyControlActivity;
 import com.yj.njh.action.ui.adapter.GenresMovieAdapter;
 import com.yj.njh.common.base.BaseFluxActivity;
 import com.yj.njh.ret.http.bean.VoideClassTJBean;
+
+import org.greenrobot.greendao.query.QueryBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +59,7 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
     private ProgressBar lemon_movie_details_pro;
     private LinearLayout lemon_movie_details_main;
     private LabelView lemon_image_icon;
+    private TextView tvDetailsSc;
 //    private Movie.Data data; //影片数据
     private List<GenresMovie.Data> videoList = new ArrayList<>(); //相关影视
 //    private MovieDetailsPresenter movieDetailsActivity = new MovieDetailsPresenter(this);
@@ -73,6 +84,7 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
 
     @Override
     public void initData(Bundle savedInstanceState) {
+        listBean= (VoideClassTJBean) getIntent().getSerializableExtra("videoInfo");
         initViewMove();
         initView();
         initialized();
@@ -109,7 +121,7 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
 
     }
 
-
+    VoideClassTJModel voideClassTJBean;
     private void initView() {
 //        options = new DisplayImageOptions.Builder()
 //                .showStubImage(R.drawable.lemon_details_small_def)          // 设置图片下载期间显示的图片
@@ -126,7 +138,18 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
         details_serial = (ReflectItemView) findViewById(R.id.details_serial);
         details_sc = (ReflectItemView) findViewById(R.id.details_sc);
         lemon_image_icon = (LabelView) findViewById(R.id.lemon_image_icon);
+        tvDetailsSc= findViewById(R.id.tv_details_sc);
 //        dataBaseDao = new DataBaseDao(context);
+         voideClassTJBean=new VoideClassTJModel();
+        QueryBuilder<VoideClassTJModel> voideClassTJModelQueryBuilder = voideClassTJBean.getVoideClassTJBeanDao().queryBuilder();
+        voideClassTJModelQueryBuilder.where(VoideClassTJModelDao.Properties.Id.eq(listBean.getId()));
+       List<VoideClassTJModel> list = voideClassTJModelQueryBuilder.list();
+        if (list.size()>0){
+            voideClassTJBean=list.get(0);
+            tvDetailsSc.setText("取消收藏");
+        }else {
+            tvDetailsSc.setText("添加收藏");
+        }
     }
 
     public void initialized() {
@@ -161,7 +184,7 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
 //            details_serial.setVisibility(View.VISIBLE);
 //            movieDetailsActivity.initSerialData(videoId,userId);
 //        }
-        VoideClassTJBean listBean= (VoideClassTJBean) getIntent().getSerializableExtra("videoInfo");
+
         initViewSerialDate(listBean);
     }
 
@@ -348,27 +371,32 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
         if (lemon_movie_details_pro.getVisibility() == View.GONE) {
             switch (v.getId()) {
                 case R.id.details_play:
-                    Bundle bundle = new Bundle();
-                    if (AppConstant.MOVICE.equals(videoType)) {
-//                        bundle.putString("videoId", data.getId());
-//                        bundle.putString("SerialEpisodeId", "");
-//                        bundle.putBoolean("isPersonal", isPersonal);
-//                        bundle.putString("videoName", data.getMovieName());
-//                        bundle.putString("videoImage",data.getPicturePath());
+                    VoideClassTJBFModel voideClassTJBFModel=new VoideClassTJBFModel();
+                    QueryBuilder<VoideClassTJBFModel> voideClassTJBFModelQueryBuilder = voideClassTJBFModel.getVoideClassTJBFModelDao().queryBuilder();
+                    voideClassTJBFModelQueryBuilder.where(VoideClassTJBFModelDao.Properties.Id.eq(listBean.getId()));
+                    List<VoideClassTJBFModel> list1 = voideClassTJBFModelQueryBuilder.list();
+                    if (list1.size()==0){
+                        voideClassTJBFModel.setContent(listBean.getContent());
+                        voideClassTJBFModel.setDirected(listBean.getDirected());
+                        voideClassTJBFModel.setHits(listBean.getHits());
+                        voideClassTJBFModel.setId(listBean.getId());
+                        voideClassTJBFModel.setLevel(listBean.getLevel());
+                        voideClassTJBFModel.setPic(listBean.getPic());
+                        voideClassTJBFModel.setPicslide(listBean.getPicslide());
+                        voideClassTJBFModel.setTime(listBean.getTime());
+                        voideClassTJBFModel.setTopic(listBean.getTopic());
+                        voideClassTJBFModel.setStarring(listBean.getStarring());
+                        PlayUrlsBean playUrlsBean=new PlayUrlsBean();
+                        playUrlsBean.setPlayurls(listBean.getPlayurls());
+                        voideClassTJBFModel.setType(listBean.getType());
+                        voideClassTJBFModel.setPlayurls(new Gson().toJson(playUrlsBean));
+                        voideClassTJBFModel.setName(listBean.getName());
+                        voideClassTJBFModel.getVoideClassTJBFModelDao().save(voideClassTJBFModel);
                     }
-//                    else if(AppConstant.SERIALS.equals(videoType) || AppConstant.DONGMAN.equals(videoType) || AppConstant.ZONGYI.equals(videoType)) {
-//                        bundle.putString("SerialEpisodeId", serialData.getSerialEpisodes().get(0).getId());  //剧集ID
-//                        bundle.putString("videoId", serialData.getSerialEpisodes().get(0).getSerialId());
-//                        bundle.putString("videoName", serialData.getSerialName());
-//                        bundle.putString("lastEpisode", serialData.getLastEpisode());
-//                       // bundle.putInt("index", index);
-//                        bundle.putString("videoImage", serialData.getPicturePath());
-//                     //   bundle.putParcelableArrayList("SerialEpisodes",serialData.getSerialEpisodes());
-//                    }
-                    bundle.putString("videoType", videoType);
-                  //  startActivity(PlayActivity.class,bundle);
-                  //  startActivity(BdPalyActivity.class,bundle);
-//                    startActivity(IjkPlayerActivity.class,bundle);
+
+                    Intent intent = new Intent(this, PlayEmptyControlActivity.class);
+                    intent.putExtra("listBean",listBean);
+                    startActivity(intent);
                     break;
                 case R.id.details_serial:
                     //选择剧集
@@ -388,6 +416,37 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
                     //添加收藏
                     isKeyDown = true;
                     lemon_movie_details_pro.setVisibility(View.VISIBLE);
+                    if (tvDetailsSc.getText().toString().equals("添加收藏")) {
+                         voideClassTJBean = new VoideClassTJModel();
+                        voideClassTJBean.setContent(listBean.getContent());
+                        voideClassTJBean.setDirected(listBean.getDirected());
+                        voideClassTJBean.setHits(listBean.getHits());
+                        voideClassTJBean.setId(listBean.getId());
+                        voideClassTJBean.setLevel(listBean.getLevel());
+                        voideClassTJBean.setPic(listBean.getPic());
+                        voideClassTJBean.setPicslide(listBean.getPicslide());
+                        voideClassTJBean.setTime(listBean.getTime());
+                        voideClassTJBean.setTopic(listBean.getTopic());
+                        voideClassTJBean.setStarring(listBean.getStarring());
+                        voideClassTJBean.setType(listBean.getType());
+                        PlayUrlsBean playUrlsBean=new PlayUrlsBean();
+                        playUrlsBean.setPlayurls(listBean.getPlayurls());
+                        voideClassTJBean.setPlayurls(new Gson().toJson(playUrlsBean));
+                        voideClassTJBean.setName(listBean.getName());
+                        voideClassTJBean.getVoideClassTJBeanDao().save(voideClassTJBean);
+                        tvDetailsSc.setText("取消收藏");
+                        lemon_movie_details_pro.setVisibility(View.GONE);
+                        QueryBuilder<VoideClassTJModel> voideClassTJModelQueryBuilder = voideClassTJBean.getVoideClassTJBeanDao().queryBuilder();
+                        voideClassTJModelQueryBuilder.where(VoideClassTJModelDao.Properties.Id.eq(listBean.getId()));
+                        List<VoideClassTJModel> list = voideClassTJModelQueryBuilder.list();
+                        if (list.size()>0){
+                            voideClassTJBean=list.get(0);
+                        }
+                    }else {
+                        voideClassTJBean.getVoideClassTJBeanDao().delete(voideClassTJBean);
+                        tvDetailsSc.setText("添加收藏");
+                        lemon_movie_details_pro.setVisibility(View.GONE);
+                    }
 //                    String deviceId = AppSystemUtils.getDeviceId();
 //                    Favorite favorite = new Favorite();
 //                    favorite.setMAC(deviceId);

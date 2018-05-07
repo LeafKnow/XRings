@@ -44,6 +44,11 @@ public class ActionsCreator<V extends BaseView,T extends LifeCycleListener> impl
         HttpRxObservable.getObservable(apiObservable, activity)
                 .subscribe(snifferMap.get(tag));
     }
+    protected void reqDateList(Observable apiObservable, BaseActivity activity, boolean isShow, final String tag){
+        snifferMap.put(tag,new Sniffer(dispatcher,mView,isShow,tag));
+        HttpRxObservable.getObservable(apiObservable, activity)
+                .subscribe(snifferMap.get(tag));
+    }
     protected void reqDate(Observable apiObservable, BaseFragment fragment, boolean isShow, final String tag){
         snifferMap.put(tag,new Sniffer(dispatcher,mView,isShow,tag));
         HttpRxObservable.getObservable(apiObservable, fragment)

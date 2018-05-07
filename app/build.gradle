@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 //apply plugin: 'me.tatarka.retrolambda'
 apply plugin: 'android-aspectjx'
 apply plugin: 'com.jakewharton.butterknife'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
 android {
 
     compileSdkVersion rootProject.ext.android.compileSdkVersion
@@ -22,9 +23,14 @@ android {
                 arguments = [moduleName: project.getName()]
             }
         }
+        // Enabling multidex support.
+        multiDexEnabled true
     }
-
-
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['src/main/jniLibs']
+        }
+    }
 
     signingConfigs {
         myConfig {
@@ -64,18 +70,27 @@ android {
     lintOptions {//lint检测是否开启/关闭
         abortOnError false
     }
+    greendao {
+        schemaVersion 1//对应当前数据库版本
+        daoPackage 'com.yj.njh.action.db.dao'//由GreenDao自动生成代码所在的包名，默认的是在项目包下面新建一个gen。
+        targetGenDir 'src/main/java'// 设置自动生成代码的目录。
+    }
 }
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-//    if (rootProject.ext.isModule) {
-        compile project(':lib_common')
-//    } else {
-//        compile project(':module_main')
-//    }
-
+    //    if (rootProject.ext.isModule) {
+    compile project(':lib_common')
+    //    } else {
+    //        compile project(':module_main')
+    //    }
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
     annotationProcessor rootProject.ext.dependencies.butterknife_compiler
     annotationProcessor rootProject.ext.dependencies.arouter_compiler
 
+    compile'org.greenrobot:greendao:3.2.2'
+//    compile rootProject.ext.dependencies.greendao_generator
+//    //完整版引入
+//    compile 'com.shuyu:GSYVideoPlayer:4.1.2'
+    compile 'com.android.support:multidex:1.0.0'
 }

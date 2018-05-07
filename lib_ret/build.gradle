@@ -1,5 +1,4 @@
 apply plugin: 'com.android.library'
-
 android {
     compileSdkVersion rootProject.ext.android.compileSdkVersion
     buildToolsVersion rootProject.ext.android.buildToolsVersion
@@ -20,6 +19,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+
 }
 
 dependencies {
@@ -39,5 +39,7 @@ dependencies {
 
     /*utilcode 常用工具类*/
     compile rootProject.ext.dependencies.utilcode
+    //数据库
+//    compile rootProject.ext.dependencies.greendao
 
 }

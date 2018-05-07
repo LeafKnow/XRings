@@ -68,4 +68,11 @@
     <string name="lemon95_shengdao">声道</string>
     <string name="sdk_video_connect_server_text">努力连接中...</string>
     <string name="sdk_video_connect_loading_text">加载数据中...</string>
+
+    <string name="btn_start">开始</string>
+    <string name="btn_pause">暂停</string>
+    <string name="btn_resume">继续</string>
+    <string name="btn_stop">停止</string>
+
+    <string name="buffering">Buffering</string>
 </resources>

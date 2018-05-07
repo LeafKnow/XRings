@@ -6,10 +6,9 @@ import java.util.List;
 /**
  * Created by niejiahuan on 18/4/10.
  */
-
 public class VoideInfoListBean implements Serializable{
 
-
+    protected Long id;
     /**
      * page : 1
      * pagecount : 2

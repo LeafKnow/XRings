@@ -33,9 +33,9 @@ public class LoginStore extends Store {
     public void selectInfo(HashMap<String, Object> data) {
         emitStoreChange("select", data);
     }
-    @BindAction("getvideoTitleInfo")
+    @BindAction("getvideotype")
     public void getvideoTitleInfo(HashMap<String, Object> data) {
-        emitStoreChange("getvideoTitleInfo", data);
+        emitStoreChange("getvideotype", data);
     }
     @BindAction("getvideoListInfo")
     public void getvideoListInfo(HashMap<String, Object> data) {

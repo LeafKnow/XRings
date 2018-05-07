@@ -27,12 +27,15 @@ import com.lemon95.androidtvwidget.view.MainUpView;
 import com.lemon95.androidtvwidget.view.OpenTabHost;
 import com.lemon95.androidtvwidget.view.ReflectItemView;
 import com.lemon95.androidtvwidget.view.TextViewWithTTF;
+import com.yj.njh.action.ui.TJDetailsActivity;
 import com.yj.njh.action.ui.actions.LoginAction;
 import com.yj.njh.action.ui.adapter.OpenTabTitleAdapter;
 import com.yj.njh.action.ui.favoritery.FavoritesActivity;
 import com.yj.njh.action.ui.history.HistoryActivity;
+import com.yj.njh.action.ui.mm.MmListActivity;
 import com.yj.njh.action.ui.search.SearchActivity;
 import com.yj.njh.action.ui.stores.LoginStore;
+import com.yj.njh.action.ui.vlist.VideoListActivity;
 import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity2;
 import com.yj.njh.action.view.ConfirmDialog;
 import com.yj.njh.common.base.BaseFluxActivity;
@@ -56,15 +59,16 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
     private View mOldFocus;
     private Button lemon_but_search;  //搜索
     private ReflectItemView page1_item1,page1_item2,page1_item3,page1_item4;
-    private ReflectItemView page2_item1,page2_item2,page2_item3,page2_item4,page2_item5,page2_item6,page2_item7,page2_item8;
-    private ReflectItemView page3_item1,page3_item2,page3_item3,page3_item4;
+    private ReflectItemView page2_item0,page2_item1,page2_item2,page2_item3,page2_item4,page2_item5,page2_item6,page2_item7,page2_item8;
+    private ReflectItemView page3_item0,page3_item1,page3_item2,page3_item3,page3_item4,page3_item5,page3_item6,page3_item7,page3_item8;
     private ReflectItemView page4_item1,page4_item2,page4_item3,page4_item4,page4_item5,page4_item6;
     private ImageView lemon_page2_img1,lemon_page2_img2,lemon_page2_img3,lemon_page2_img4,lemon_page2_img5,lemon_page2_img6,lemon_page2_img7,lemon_page2_img8;
-    private ImageView lemon_page3_img1,lemon_page3_img2,lemon_page3_img3,lemon_page3_img4;
+    private ImageView lemon_page3_img1,lemon_page3_img2,lemon_page3_img3,lemon_page3_img4,lemon_page3_img5,lemon_page3_img6,lemon_page3_img7,lemon_page3_img8;
     private TextView lemon_page3_name1,lemon_page3_name2,lemon_page3_name3,lemon_page3_name4;
     private int postion = 1;
 
-    List<VoideClassTJBean> voideClassTJBeanList;
+    List<VoideClassTJBean> voideClassTJBeanList;//视频列表
+    List<HotTopicTjBean> hotTopicTjBeans;//名牧推荐
     @Override
     protected boolean flux() {
         return true;
@@ -120,6 +124,7 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
         page1_item3 = (ReflectItemView)view1.findViewById(R.id.page1_item3);
         page1_item4 = (ReflectItemView)view1.findViewById(R.id.page1_item4);
         page2_item1 = (ReflectItemView)view2.findViewById(R.id.page2_item1);
+        page2_item0=(ReflectItemView)view2.findViewById(R.id.page2_item0);
         page2_item2 = (ReflectItemView)view2.findViewById(R.id.page2_item2);
         page2_item3 = (ReflectItemView)view2.findViewById(R.id.page2_item3);
         page2_item4 = (ReflectItemView)view2.findViewById(R.id.page2_item4);
@@ -139,14 +144,23 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
         lemon_page3_img2 = (ImageView)view3.findViewById(R.id.lemon_page3_img2);
         lemon_page3_img3 = (ImageView)view3.findViewById(R.id.lemon_page3_img3);
         lemon_page3_img4 = (ImageView)view3.findViewById(R.id.lemon_page3_img4);
-        lemon_page3_name1 = (TextView)view3.findViewById(R.id.lemon_page3_name1);
-        lemon_page3_name2 = (TextView)view3.findViewById(R.id.lemon_page3_name2);
-        lemon_page3_name3 = (TextView)view3.findViewById(R.id.lemon_page3_name3);
-        lemon_page3_name4 = (TextView)view3.findViewById(R.id.lemon_page3_name4);
+        lemon_page3_img5 = (ImageView)view3.findViewById(R.id.lemon_page3_img5);
+        lemon_page3_img6 = (ImageView)view3.findViewById(R.id.lemon_page3_img6);
+        lemon_page3_img7 = (ImageView)view3.findViewById(R.id.lemon_page3_img7);
+        lemon_page3_img8 = (ImageView)view3.findViewById(R.id.lemon_page3_img8);
+//        lemon_page3_name1 = (TextView)view3.findViewById(R.id.lemon_page3_name1);
+//        lemon_page3_name2 = (TextView)view3.findViewById(R.id.lemon_page3_name2);
+//        lemon_page3_name3 = (TextView)view3.findViewById(R.id.lemon_page3_name3);
+//        lemon_page3_name4 = (TextView)view3.findViewById(R.id.lemon_page3_name4);
+        page3_item0 = (ReflectItemView)view3.findViewById(R.id.page3_item0);
         page3_item1 = (ReflectItemView)view3.findViewById(R.id.page3_item1);
         page3_item2 = (ReflectItemView)view3.findViewById(R.id.page3_item2);
         page3_item3 = (ReflectItemView)view3.findViewById(R.id.page3_item3);
         page3_item4 = (ReflectItemView)view3.findViewById(R.id.page3_item4);
+        page3_item5 = (ReflectItemView)view3.findViewById(R.id.page3_item5);
+        page3_item6 = (ReflectItemView)view3.findViewById(R.id.page3_item6);
+        page3_item7 = (ReflectItemView)view3.findViewById(R.id.page3_item7);
+        page3_item8 = (ReflectItemView)view3.findViewById(R.id.page3_item8);
 //        page4_item1 = (ReflectItemView)view4.findViewById(R.id.page4_item1);
 //        page4_item2 = (ReflectItemView)view4.findViewById(R.id.page4_item2);
 //        page4_item3 = (ReflectItemView)view4.findViewById(R.id.page4_item3);
@@ -527,6 +541,7 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
         page1_item3.setOnClickListener(this);
         page1_item4.setOnClickListener(this);
 
+        page2_item0.setOnClickListener(this);
         page2_item1.setOnClickListener(this);
         page2_item2.setOnClickListener(this);
         page2_item3.setOnClickListener(this);
@@ -536,10 +551,15 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
         page2_item7.setOnClickListener(this);
         page2_item8.setOnClickListener(this);
 
+        page3_item0.setOnClickListener(this);
         page3_item1.setOnClickListener(this);
         page3_item2.setOnClickListener(this);
         page3_item3.setOnClickListener(this);
         page3_item4.setOnClickListener(this);
+        page3_item5.setOnClickListener(this);
+        page3_item6.setOnClickListener(this);
+        page3_item7.setOnClickListener(this);
+        page3_item8.setOnClickListener(this);
 //        page4_item1.setOnClickListener(this);
 //        page4_item2.setOnClickListener(this);
 //        page4_item3.setOnClickListener(this);
@@ -590,68 +610,120 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
                // ToastUtils.showBgToast("1",context);
                 startActivity(new Intent(this,FavoritesActivity.class));
                 break;
-//            case R.id.page2_item1:
-//                MobclickAgent.onEvent(context, "page2_item1");
-//                page2StartPage("1");
-////                bundle.putString("videoId",video.getVideoId());
-////                bundle.putString("videoType",video.getVideoTypeId());
-////                bundle.putString("SerialEpisodeId", "");
-////                startActivity(MovieDetailsActivity.class,bundle);
-//                break;
-//            case R.id.page2_item2:
-//                MobclickAgent.onEvent(context, "page2_item2");
-//                page2StartPage("2");
-////                bundle.putString("videoId", video.getVideoId());
-////                bundle.putString("SerialEpisodeId", "");
-////                bundle.putBoolean("isPersonal", false);
-////                bundle.putString("videoName", video.getTitle());
-////                bundle.putString("videoType",video.getVideoTypeId());
-////                startActivity(PlayActivity.class,bundle);
-//                break;
-//            case R.id.page2_item3:
-//                MobclickAgent.onEvent(context, "page2_item3");
-//                page2StartPage("3");
-////                bundle.putString("videoId", video.getVideoId());
-////                bundle.putString("SerialEpisodeId", "");
-////                bundle.putBoolean("isPersonal", false);
-////                bundle.putString("videoName", video.getTitle());
-////                bundle.putString("videoType",video.getVideoTypeId());
-////                startActivity(PlayActivity.class, bundle);
-//                break;
-//            case R.id.page2_item4:
-//                MobclickAgent.onEvent(context, "page2_item4");
-//                page2StartPage("4");
-//                break;
-//            case R.id.page2_item5:
-//                MobclickAgent.onEvent(context, "page2_item5");
-//                page2StartPage("5");
-//                break;
-//            case R.id.page2_item6:
-//                MobclickAgent.onEvent(context, "page2_item6");
-//                page2StartPage("6");
-//                break;
-//            case R.id.page2_item7:
-//                MobclickAgent.onEvent(context, "page2_item7");
-//                page2StartPage("7");
-//                break;
-//            case R.id.page2_item8:
-//                MobclickAgent.onEvent(context, "page2_item8");
-//                page2StartPage("8");
-//                break;
-            case R.id.page3_item1:
-//                MobclickAgent.onEvent(context, "page3_item1");
+            case R.id.page2_item0:
+                Bundle bundle3 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle3.putString("videoType",AppConstant.ZONGYI);
+                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle3));
+                break;
+
+            case R.id.page2_item1:
                 if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>0) {
                     Bundle bundle1 = new Bundle();
                     bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(0));
                     startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
                 }
+//                bundle.putString("videoId",video.getVideoId());
+//                bundle.putString("videoType",video.getVideoTypeId());
+//                bundle.putString("SerialEpisodeId", "");
+//                startActivity(MovieDetailsActivity.class,bundle);
                 break;
-            case R.id.page3_item2:
-//                MobclickAgent.onEvent(context, "page3_item2");
+            case R.id.page2_item2:
                 if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=1) {
                     Bundle bundle1 = new Bundle();
                     bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(1));
                     startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                bundle.putString("videoId", video.getVideoId());
+//                bundle.putString("SerialEpisodeId", "");
+//                bundle.putBoolean("isPersonal", false);
+//                bundle.putString("videoName", video.getTitle());
+//                bundle.putString("videoType",video.getVideoTypeId());
+//                startActivity(PlayActivity.class,bundle);
+                break;
+            case R.id.page2_item3:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=2) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(2));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item3");
+//                page2StartPage("3");
+//                bundle.putString("videoId", video.getVideoId());
+//                bundle.putString("SerialEpisodeId", "");
+//                bundle.putBoolean("isPersonal", false);
+//                bundle.putString("videoName", video.getTitle());
+//                bundle.putString("videoType",video.getVideoTypeId());
+//                startActivity(PlayActivity.class, bundle);
+
+                break;
+            case R.id.page2_item4:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=3) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(3));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item4");
+//                page2StartPage("4");
+                break;
+            case R.id.page2_item5:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=3) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(3));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item5");
+//                page2StartPage("5");
+                break;
+            case R.id.page2_item6:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=4) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(4));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item6");
+//                page2StartPage("6");
+                break;
+            case R.id.page2_item7:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=5) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(5));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item7");
+//                page2StartPage("7");
+                break;
+            case R.id.page2_item8:
+                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=6) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(6));
+                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                }
+//                MobclickAgent.onEvent(context, "page2_item8");
+//                page2StartPage("8");
+                break;
+
+            case R.id.page3_item0:
+                Bundle bundle4 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle3.putString("videoType",AppConstant.ZONGYI);
+                startActivity(new Intent(this,MmListActivity.class).putExtras(bundle4));
+
+                break;
+            case R.id.page3_item1:
+//                MobclickAgent.onEvent(context, "page3_item1");
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>0) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(0));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
+                }
+                break;
+            case R.id.page3_item2:
+//                MobclickAgent.onEvent(context, "page3_item2");
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=1) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(1));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
                 }
                 break;
             case R.id.page3_item3:
@@ -660,10 +732,10 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
 //               // bundle3.putString("videoType",AppConstant.FUNNY);
 ////                bundle3.putString("videoType",AppConstant.ZONGYI);
 //                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle3));
-                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=2) {
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=2) {
                     Bundle bundle1 = new Bundle();
-                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(2));
-                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(2));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
                 }
                 break;
             case R.id.page3_item4:
@@ -672,10 +744,58 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
 //               // bundle3.putString("videoType",AppConstant.FUNNY);
 ////                bundle4.putString("videoType",AppConstant.DONGMAN);
 //                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle4));
-                if (voideClassTJBeanList!=null&&voideClassTJBeanList.size()>=3) {
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=3) {
                     Bundle bundle1 = new Bundle();
-                    bundle1.putSerializable("videoInfo", voideClassTJBeanList.get(3));
-                    startActivity(new Intent(this, MovieDetailsActivity2.class).putExtras(bundle1));
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(3));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
+                }
+                break;
+            case R.id.page3_item5:
+////                MobclickAgent.onEvent(context, "page3_item4");
+//                Bundle bundle4 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle4.putString("videoType",AppConstant.DONGMAN);
+//                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle4));
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=4) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(4));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
+                }
+                break;
+            case R.id.page3_item6:
+////                MobclickAgent.onEvent(context, "page3_item4");
+//                Bundle bundle4 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle4.putString("videoType",AppConstant.DONGMAN);
+//                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle4));
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=5) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(5));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
+                }
+                break;
+            case R.id.page3_item7:
+////                MobclickAgent.onEvent(context, "page3_item4");
+//                Bundle bundle4 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle4.putString("videoType",AppConstant.DONGMAN);
+//                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle4));
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=6) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(6));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
+                }
+                break;
+            case R.id.page3_item8:
+////                MobclickAgent.onEvent(context, "page3_item4");
+//                Bundle bundle4 = new Bundle();
+//               // bundle3.putString("videoType",AppConstant.FUNNY);
+////                bundle4.putString("videoType",AppConstant.DONGMAN);
+//                startActivity(new Intent(this,VideoListActivity.class).putExtras(bundle4));
+                if (hotTopicTjBeans!=null&&hotTopicTjBeans.size()>=7) {
+                    Bundle bundle1 = new Bundle();
+                    bundle1.putSerializable("tjInfo", hotTopicTjBeans.get(7));
+                    startActivity(new Intent(this, TJDetailsActivity.class).putExtras(bundle1));
                 }
                 break;
 //            case R.id.page4_item1:
@@ -854,7 +974,7 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
                 }
             }
         }else if ("getHotTopic".equals(event.url)){
-            List<HotTopicTjBean> hotTopicTjBeans= (List<HotTopicTjBean>) event.data;
+             hotTopicTjBeans= (List<HotTopicTjBean>) event.data;
             for (int i = 0; i < hotTopicTjBeans.size(); i++) {
                 if (hotTopicTjBeans.size()>0&&i==0) {
                     Glide.with(this)
@@ -872,6 +992,24 @@ public class MainActivity extends BaseFluxActivity<LoginStore,LoginAction> imple
                     Glide.with(this)
                             .load(hotTopicTjBeans.get(i).getPic())
                             .into(lemon_page3_img4);
+                }else if (hotTopicTjBeans.size()>=4&&i==4) {
+                    Glide.with(this)
+                            .load(hotTopicTjBeans.get(i).getPic())
+                            .into(lemon_page3_img5);
+                }
+                else if (hotTopicTjBeans.size()>=5&&i==5) {
+                    Glide.with(this)
+                            .load(hotTopicTjBeans.get(i).getPic())
+                            .into(lemon_page3_img6);
+                }
+                else if (hotTopicTjBeans.size()>=6&&i==6) {
+                    Glide.with(this)
+                            .load(hotTopicTjBeans.get(i).getPic())
+                            .into(lemon_page3_img7);
+                }else if (hotTopicTjBeans.size()>=7&&i==7) {
+                    Glide.with(this)
+                            .load(hotTopicTjBeans.get(i).getPic())
+                            .into(lemon_page3_img8);
                 }
 //                else if (hotTopicTjBeans.size()>=4&&i==4) {
 //                    Glide.with(this)

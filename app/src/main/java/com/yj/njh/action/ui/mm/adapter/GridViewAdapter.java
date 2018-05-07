@@ -1,4 +1,4 @@
-package com.yj.njh.action.ui.adapter;
+package com.yj.njh.action.ui.mm.adapter;
 
 import android.content.Context;
 import android.view.View;
@@ -9,41 +9,36 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.StringUtils;
 import com.bumptech.glide.Glide;
+import com.lemon95.androidtvwidget.view.LabelView;
 import com.yj.njh.action.R;
-import com.yj.njh.action.model.VoideClassTJModel;
+import com.yj.njh.ret.http.bean.HotTopicTjBean;
 
 import java.util.List;
 
 /**
- * Created by WXT on 2016/7/27.
- * 收藏记录
+ * Created by WXT on 2016/7/19.
  */
-public class FavoritesAdapter extends BaseAdapter {
+public class GridViewAdapter extends BaseAdapter {
 
-    private List<VoideClassTJModel> listData;
+    List<HotTopicTjBean> videoBriefsList;
     private Context context;
-//    private DisplayImageOptions options;
 
-    public FavoritesAdapter(List<VoideClassTJModel> listData, Context context) {
-        // 使用DisplayImageOptions.Builder()创建DisplayImageOptions
-//        options = new DisplayImageOptions.Builder()
-//                .showStubImage(R.drawable.lemon_details_small_def)          // 设置图片下载期间显示的图片
-//                .showImageForEmptyUri(R.drawable.lemon_details_small_def)  // 设置图片Uri为空或是错误的时候显示的图片
-//                .showImageOnFail(R.drawable.lemon_details_small_def)       // 设置图片加载或解码过程中发生错误显示的图片
-//                .build();
-        this.listData = listData;
+
+    public GridViewAdapter(List<HotTopicTjBean> videoBriefsList, Context context) {
+        this.videoBriefsList = videoBriefsList;
         this.context = context;
     }
 
     @Override
     public int getCount() {
-        return listData.size();
+        return videoBriefsList.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return listData.get(position);
+        return videoBriefsList.get(position);
     }
+
 
     @Override
     public long getItemId(int position) {
@@ -60,10 +55,10 @@ public class FavoritesAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        VoideClassTJModel videoBriefs = listData.get(position);
-        Glide.with(context).load(videoBriefs.getPic()).into(holder.lemon_grid_img);
+        HotTopicTjBean videoBriefs = videoBriefsList.get(position);
 //        ImageLoader.getInstance().displayImage(AppConstant.RESOURCE + videoBriefs.getPicturePath(),holder.lemon_grid_img,options);
-        holder.lemon_grid_textView.setText(videoBriefs.getName());
+//        holder.lemon_grid_textView.setText(videoBriefs);
+        Glide.with(context).load(videoBriefs.getPic()).into(holder.lemon_grid_img);
         String title = videoBriefs.getName();
         if (!StringUtils.isEmpty(title)) {
             holder.lemon_title.setText(title);
@@ -71,6 +66,11 @@ public class FavoritesAdapter extends BaseAdapter {
         } else {
             holder.lemon_title.setVisibility(View.GONE);
         }
+//        if (videoBriefs.getIsNew().equalsIgnoreCase("true")) {
+//            holder.lemon_image_icon.setVisibility(View.VISIBLE);
+//        } else {
+//            holder.lemon_image_icon.setVisibility(View.GONE);
+//        }
         return view;
     }
 
@@ -78,10 +78,12 @@ public class FavoritesAdapter extends BaseAdapter {
         TextView lemon_grid_textView;
         TextView lemon_title;
         ImageView lemon_grid_img;
+        LabelView lemon_image_icon;
         public ViewHolder(View view) {
             lemon_grid_textView = (TextView) view.findViewById(R.id.lemon_grid_textView);
             lemon_title = (TextView) view.findViewById(R.id.lemon_title);
             lemon_grid_img = (ImageView) view.findViewById(R.id.lemon_grid_img);
+            lemon_image_icon = (LabelView) view.findViewById(R.id.lemon_image_icon);
         }
     }
 }

@@ -7,8 +7,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.yj.njh.action.R;
-import com.yj.njh.action.model.WatchHistories;
+import com.yj.njh.action.model.VoideClassTJBFModel;
 
 import java.util.List;
 
@@ -17,11 +18,11 @@ import java.util.List;
  */
 public class HistoryAdapter extends BaseAdapter {
 
-    private List<WatchHistories.Data> videoList;
+    private List<VoideClassTJBFModel> videoList;
     private Context context;
 //    private DisplayImageOptions options;
 
-    public HistoryAdapter(List<WatchHistories.Data> videoList, Context context) {
+    public HistoryAdapter(List<VoideClassTJBFModel> videoList, Context context) {
 //        options = new DisplayImageOptions.Builder()
 //                .showStubImage(R.drawable.lemon_details_small_def)          // 设置图片下载期间显示的图片
 //                .showImageForEmptyUri(R.drawable.lemon_details_small_def)  // 设置图片Uri为空或是错误的时候显示的图片
@@ -56,9 +57,10 @@ public class HistoryAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        WatchHistories.Data videoBriefs = videoList.get(position);
+        VoideClassTJBFModel videoBriefs = videoList.get(position);
+        Glide.with(context).load(videoBriefs.getPic()).into(holder.lemon_grid_img);
 //        ImageLoader.getInstance().displayImage(AppConstant.RESOURCE + videoBriefs.getPicturePath(),holder.lemon_grid_img,options);
-        holder.lemon_grid_textView.setText(videoBriefs.getTitle());
+        holder.lemon_grid_textView.setText(videoBriefs.getName());
         return view;
     }
 

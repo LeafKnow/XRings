@@ -1,51 +1,56 @@
-package com.yj.njh.ret.http.bean;
+package com.yj.njh.action.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
+import com.yj.njh.action.db.dao.VoideClassTJModelDao;
+import com.yj.njh.action.db.manager.GreenDaoManager;
+
+import org.greenrobot.greendao.annotation.Entity;
+import org.greenrobot.greendao.annotation.Generated;
+import org.greenrobot.greendao.annotation.Id;
 
 /**
  * Created by niejiahuan on 18/1/23.
  */
-
-public class VoideClassTJBean implements Serializable{
-    public VoideClassTJBean() {
-    }
-    public VoideClassTJBean(VoideInfoListBean.ListBean listBean) {
-        this.id = listBean.getId();
-        this.name = listBean.getName();
-        this.type = listBean.getType();
-        this.pic = listBean.getPic();
-        this.starring = listBean.getStarring();
-        this.directed = listBean.getDirected();
-        this.hits = listBean.getHits();
-        this.topic = listBean.getTopic();
-        this.picslide = listBean.getPicslide();
-        this.content = listBean.getDes();
-        this.level = listBean.getLevel();
-
-        String path;
-        String downserver = listBean.getPlayserver();
-        if (downserver.contains("rtmp1vod1")){
-            path="http://wx.vod1.hmr12.net:883/";
-        }else {
-            path="http://wx.vod2.hmr12.net:883/";
-        }
-        String [] split = new String[0];
-        if (listBean.getDl().size() > 0) {
-            String url = listBean.getDl().get(0).getUrl();
-            if (null != url) {
-                split = url.split("#");
-            }
-
-        }
-        List<String> stringList=new ArrayList<>();
-        for (int i = 0; i < split.length; i++) {
-            stringList.add(path+split[i]);
-        }
-        this.playurls=new ArrayList<>();
-        this.playurls.add(stringList);
-    }
+@Entity
+public class VoideClassTJModel {
+    @Id
+    public Long vId;
+//    public VoideClassTJBean() {
+//    }
+//    public VoideClassTJBean(VoideInfoListBean.ListBean listBean) {
+//        this.id = listBean.getId();
+//        this.name = listBean.getName();
+//        this.type = listBean.getType();
+//        this.pic = listBean.getPic();
+//        this.starring = listBean.getStarring();
+//        this.directed = listBean.getDirected();
+//        this.hits = listBean.getHits();
+//        this.topic = listBean.getTopic();
+//        this.picslide = listBean.getPicslide();
+//        this.content = listBean.getDes();
+//        this.level = listBean.getLevel();
+//
+//        String path;
+//        String downserver = listBean.getPlayserver();
+//        if (downserver.contains("rtmp1vod1")){
+//            path="http://wx.vod1.hmr12.net:883/";
+//        }else {
+//            path="http://wx.vod2.hmr12.net:883/";
+//        }
+//        String [] split = new String[0];
+//        if (listBean.getDl().size() > 0) {
+//            String url = listBean.getDl().get(0).getUrl();
+//            if (null != url) {
+//                split = url.split("#");
+//            }
+//
+//        }
+//        List<String> stringList=new ArrayList<>();
+//        for (int i = 0; i < split.length; i++) {
+//            stringList.add(path+split[i]);
+//        }
+//        this.playurls=new ArrayList<>();
+//        this.playurls.add(stringList);
+//    }
 
     /**
      * id : 1467
@@ -75,7 +80,31 @@ public class VoideClassTJBean implements Serializable{
     private String content;
     private String time;
     private String level;
-    private List<List<String>> playurls;
+    private String playurls;
+
+
+    @Generated(hash = 1495616140)
+    public VoideClassTJModel(Long vId, String id, String name, String type, String pic, String starring, String directed, String hits, String topic, String picslide, String content, String time, String level, String playurls) {
+        this.vId = vId;
+        this.id = id;
+        this.name = name;
+        this.type = type;
+        this.pic = pic;
+        this.starring = starring;
+        this.directed = directed;
+        this.hits = hits;
+        this.topic = topic;
+        this.picslide = picslide;
+        this.content = content;
+        this.time = time;
+        this.level = level;
+        this.playurls = playurls;
+    }
+
+    @Generated(hash = 1092898596)
+    public VoideClassTJModel() {
+    }
+
 
     public String getId() {
         return id;
@@ -173,11 +202,23 @@ public class VoideClassTJBean implements Serializable{
         this.level = level;
     }
 
-    public List<List<String>> getPlayurls() {
+    public String getPlayurls() {
         return playurls;
     }
 
-    public void setPlayurls(List<List<String>> playurls) {
+    public void setPlayurls(String playurls) {
         this.playurls = playurls;
+    }
+
+    public Long getVId() {
+        return this.vId;
+    }
+
+    public void setVId(Long vId) {
+        this.vId = vId;
+    }
+
+    public VoideClassTJModelDao getVoideClassTJBeanDao(){
+        return GreenDaoManager.getInstance().getNewSession().getVoideClassTJModelDao();
     }
 }

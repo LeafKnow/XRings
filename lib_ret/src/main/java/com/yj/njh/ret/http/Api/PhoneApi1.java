@@ -1,8 +1,8 @@
 package com.yj.njh.ret.http.Api;
 
 
-import com.yj.njh.ret.http.bean.ClassDataModel;
-import com.yj.njh.ret.http.bean.VoideClassTJBean;
+import com.yj.njh.ret.http.bean.LMClassBean;
+import com.yj.njh.ret.http.bean.TitleInfoBean;
 import com.yj.njh.ret.http.bean.VoideInfoListBean;
 import com.yj.njh.ret.http.retrofit.HttpResponse;
 
@@ -26,8 +26,8 @@ public interface PhoneApi1 {
      * @param request
      * @return
      */
-    @GET("HmR12ApIJack.php?ty=json&ac=list")
-    Observable<ClassDataModel> getvideoTitleInfo();
+    @GET("getvideotype.php")
+    Observable<List<LMClassBean>> getvideoTitleInfo();
 
     /**
      * 获取视频列表

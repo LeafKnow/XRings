@@ -32,6 +32,7 @@
             android:layout_height="match_parent"
             android:background="@drawable/lemon_video_menu_bg"
             android:focusable="false"
+            android:visibility="gone"
             android:focusableInTouchMode="false"
             android:gravity="center_horizontal"
             android:orientation="vertical">
@@ -43,7 +44,7 @@
                 android:layout_marginTop="@dimen/px54"
                 android:focusable="false"
                 android:focusableInTouchMode="false"
-                android:text="视频"
+                android:text="@string/lemon95_movie"
                 android:textColor="@color/lemon_b3aeae"
                 android:textSize="@dimen/px51" />
 

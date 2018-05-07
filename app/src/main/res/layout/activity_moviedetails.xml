@@ -30,7 +30,7 @@
                 android:nextFocusUp="@+id/details_item1"
                 android:paddingLeft="@dimen/px36"
                 android:paddingTop="@dimen/px63"
-                android:text="@string/lemon95_movie"
+                android:text="视频"
                 android:textColor="@color/lemon_b3aeae"
                 android:textSize="@dimen/px39"
                 android:textStyle="bold" />
@@ -250,6 +250,7 @@
                                     android:src="@drawable/lemon_tubiao_11" />
 
                                 <TextView
+                                    android:id="@+id/tv_details_sc"
                                     android:layout_width="wrap_content"
                                     android:layout_height="match_parent"
                                     android:layout_gravity="center_vertical"
@@ -326,6 +327,7 @@
             android:layout_marginLeft="@dimen/px21"
             android:layout_marginTop="@dimen/px24"
             android:text="@string/lemon_movie_details_msg"
+            android:visibility="gone"
             android:textColor="@color/lemon_dcdcdc"
             android:textSize="@dimen/px30" />
 
