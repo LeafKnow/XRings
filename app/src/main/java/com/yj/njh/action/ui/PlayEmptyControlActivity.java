@@ -123,6 +123,7 @@ public class PlayEmptyControlActivity extends BaseFluxActivity {
     public void initData(Bundle savedInstanceState) {
         isTransition = getIntent().getBooleanExtra(TRANSITION, false);
          listBean = (VoideClassTJBean) getIntent().getSerializableExtra("listBean");
+         page=getIntent().getIntExtra("page",0);
         init();
     }
 

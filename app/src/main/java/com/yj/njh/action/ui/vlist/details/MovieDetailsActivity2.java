@@ -166,13 +166,15 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
         }
         TextView textView = (TextView)findViewById(R.id.lemon95_movie_title_id);
 //        LogUtils.i(TAG, videoId + ";" + userId);
-        if (AppConstant.MOVICE.equals(videoType)) {
+        if (listBean.getPlayurls().size()==0&&listBean.getPlayurls().get(0).size()==0) {
             textView.setText(getString(R.string.lemon95_movie));
 //            movieDetailsActivity.initPageData(videoId, userId,isPersonal);
             details_serial.setVisibility(View.GONE);
-        } else if(AppConstant.SERIALS.equals(videoType)) {
+            details_play.setVisibility(View.VISIBLE);
+        } else {
             textView.setText("电视剧");
             details_serial.setVisibility(View.VISIBLE);
+            details_play.setVisibility(View.GONE);
 //            movieDetailsActivity.initSerialData(videoId,userId);
         }
 //        else if ( AppConstant.ZONGYI.equals(videoType)) {
@@ -410,7 +412,8 @@ public class MovieDetailsActivity2 extends BaseFluxActivity implements View.OnCl
 //                    bundle1.putString("videoId", serialData.getSerialEpisodes().get(0).getSerialId());
 //                    bundle1.putString("videoImage", serialData.getPicturePath());
                     bundle1.putString("videoType", videoType);
-//                    startActivity(SerialActivity.class,bundle1);
+                    startActivity(new Intent(this,SerialActivity.class)
+                            .putExtra("listBean",listBean).putExtras(bundle1));
                     break;
                 case R.id.details_sc:
                     //添加收藏

@@ -11,7 +11,7 @@ import java.util.List;
 public class VoideClassTJBean implements Serializable{
     public VoideClassTJBean() {
     }
-    public VoideClassTJBean(VoideInfoListBean.ListBean listBean) {
+    public VoideClassTJBean(VoideInfoListBean listBean) {
         this.id = listBean.getId();
         this.name = listBean.getName();
         this.type = listBean.getType();
@@ -21,30 +21,11 @@ public class VoideClassTJBean implements Serializable{
         this.hits = listBean.getHits();
         this.topic = listBean.getTopic();
         this.picslide = listBean.getPicslide();
-        this.content = listBean.getDes();
+        this.content = listBean.getContent();
         this.level = listBean.getLevel();
 
-        String path;
-        String downserver = listBean.getPlayserver();
-        if (downserver.contains("rtmp1vod1")){
-            path="http://wx.vod1.hmr12.net:883/";
-        }else {
-            path="http://wx.vod2.hmr12.net:883/";
-        }
-        String [] split = new String[0];
-        if (listBean.getDl().size() > 0) {
-            String url = listBean.getDl().get(0).getUrl();
-            if (null != url) {
-                split = url.split("#");
-            }
-
-        }
-        List<String> stringList=new ArrayList<>();
-        for (int i = 0; i < split.length; i++) {
-            stringList.add(path+split[i]);
-        }
         this.playurls=new ArrayList<>();
-        this.playurls.add(stringList);
+        this.playurls.addAll(listBean.getPlayurls());
     }
 
     /**

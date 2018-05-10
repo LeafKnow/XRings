@@ -9,13 +9,13 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.lemon95.androidtvwidget.bridge.EffectNoDrawBridge;
 import com.lemon95.androidtvwidget.bridge.OpenEffectBridge;
+import com.lemon95.androidtvwidget.view.GridViewTV;
 import com.lemon95.androidtvwidget.view.MainUpView;
 import com.yj.njh.action.R;
 import com.yj.njh.action.common.AppConstant;
@@ -35,7 +35,7 @@ import java.util.List;
 
 public class HistoryActivity extends BaseFluxActivity{
 
-    private GridView lemon_gridview;
+    private GridViewTV lemon_gridview;
     private MainUpView mainUpView1;
     private TextView lemon_msg;
 //    private HistoryPresenter favoritesPresenter = new HistoryPresenter(this);
@@ -71,7 +71,7 @@ public class HistoryActivity extends BaseFluxActivity{
 
     public void setupViews() {
 //        dataBaseDao = new DataBaseDao(this);
-        lemon_gridview = (GridView)findViewById(R.id.lemon_gridview);
+        lemon_gridview = (GridViewTV)findViewById(R.id.lemon_gridview);
         mainUpView1 = (MainUpView) findViewById(R.id.mainUpView1);
         lemon_msg = (TextView) findViewById(R.id.lemon_msg);
         lemon_movie_details_pro = (ProgressBar) findViewById(R.id.lemon_movie_details_pro);

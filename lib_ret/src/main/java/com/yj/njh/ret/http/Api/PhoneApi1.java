@@ -29,11 +29,4 @@ public interface PhoneApi1 {
     @GET("getvideotype.php")
     Observable<List<LMClassBean>> getvideoTitleInfo();
 
-    /**
-     * 获取视频列表
-     * @param request
-     * @return
-     */
-    @GET("HmR12ApIJack.php?ty=json&ac=videolist")
-    Observable<VoideInfoListBean> getvideoListInfo(@QueryMap Map<String, Object> request);
 }

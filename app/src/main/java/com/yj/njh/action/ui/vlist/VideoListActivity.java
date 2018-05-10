@@ -29,6 +29,7 @@ import com.yj.njh.action.ui.stores.LoginStore;
 import com.yj.njh.action.ui.vlist.details.MovieDetailsActivity2;
 import com.yj.njh.common.base.BaseFluxActivity;
 import com.yj.njh.common.flux.stores.Store;
+import com.yj.njh.ret.http.Api.PhoneApi;
 import com.yj.njh.ret.http.Api.PhoneApi1;
 import com.yj.njh.ret.http.Api.ServiceManager;
 import com.yj.njh.ret.http.bean.LMClassBean;
@@ -40,7 +41,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> {
 
@@ -55,7 +58,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     private View mOldGridView;
     private GridViewTV gridView;
     private GridViewAdapter gridViewAdapter;
-    private List<VoideInfoListBean.ListBean> videoList = new ArrayList<>(); //影片
+    private List<VoideInfoListBean> videoList = new ArrayList<>(); //影片
     private List<LMClassBean> conditionsArrayList;
     private int page = 1;
     private TextView lemon_title;
@@ -66,7 +69,6 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     private int point = 0; //gridview 位置
     private TextView lemon_search;
 
-    List<LMClassBean> lmClassBeans;
     @Override
     protected boolean flux() {
         return true;
@@ -219,7 +221,8 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
                 Bundle bundle = new Bundle();
                 VoideClassTJBean voideClassTJBean=new VoideClassTJBean(videoList.get(position));
                 bundle.putSerializable("videoInfo",voideClassTJBean);
-                startActivity(new Intent(VideoListActivity.this,MovieDetailsActivity2.class).putExtras(bundle));
+                startActivity(new Intent(VideoListActivity.this,MovieDetailsActivity2.class)
+                        .putExtras(bundle));
 //                }
 //                VideoSearchList.Data.VideoBriefs video = videoList.get(position);
 //                if (AppConstant.FUNNY.equals(video.getVideoTypeId())) {
@@ -336,12 +339,15 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
 //        videoListPresenter.getCombQueryConditions(videoType);
 //        actionsCreator().getvideoTitleInfo(this);
 
-        ServiceManager.create1(PhoneApi1.class).getvideoTitleInfo().subscribe(new Consumer<List<LMClassBean>>() {
+        ServiceManager.create1(PhoneApi1.class).getvideoTitleInfo()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<LMClassBean>>() {
             @Override
             public void accept(List<LMClassBean> titleInfoBeans) throws Exception {
                 showListView(titleInfoBeans);
-                if (lmClassBeans.size() > 0) {
-                    getvideoListInfo(lmClassBeans.get(0).getId());
+                if (titleInfoBeans.size() > 0) {
+                    getvideoListInfo(titleInfoBeans.get(0).getId());
                 }
             }
         }, new Consumer<Throwable>() {
@@ -422,7 +428,7 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
      * 显示gridView
      * @param data
      */
-    public void showGridView( VoideInfoListBean data) {
+    public void showGridView( List<VoideInfoListBean> data) {
         isPage = true;
         if (data != null) {
           //  gridViewAdapter.notifyDataSetChanged();
@@ -435,9 +441,9 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
                     }
                 });
             }*/
-            totleCount = data.getRecordcount();
+            totleCount = data.size();
             videoList.clear();
-            videoList.addAll(data.getList());
+            videoList.addAll(data);
             gridViewAdapter.notifyDataSetChanged();
             isStart = false;
             /*new Thread(){
@@ -462,21 +468,37 @@ public class VideoListActivity extends BaseFluxActivity<LoginStore,LoginAction> 
     public void getvideoListInfo(String t){
         Map<String,Object> params=new HashMap<>();
         params.put("t",t);
-        actionsCreator().getvideoListInfo(params,this);
+        params.put("page",1);
+        ServiceManager.create(PhoneApi.class)
+                .getvideoListInfo(params)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<List<VoideInfoListBean>>() {
+                    @Override
+                    public void accept(List<VoideInfoListBean> voideInfoListBeans) throws Exception {
+                        showGridView(voideInfoListBeans);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        showToast(throwable.getMessage());
+                    }
+                });
+//        actionsCreator().getvideoListInfo(params,this);
     }
 
     @Override
-    protected void updateView(Store.StoreChangeEvent event) {
-        super.updateView(event);
-        if ("getvideotype".equals(event.url)){
+        protected void updateView(Store.StoreChangeEvent event) {
+            super.updateView(event);
+            if ("getvideotype".equals(event.url)){
 //            lmClassBeans= (List<LMClassBean>) event.data;
 //            showListView(lmClassBeans);
 //            if (lmClassBeans.size()>0) {
 //                getvideoListInfo(lmClassBeans.get(0).getId());
 //            }
-        }else if ("getvideoListInfo".equals(event.url)){
-            VoideInfoListBean classDataModel= (VoideInfoListBean) event.data;
-            showGridView(classDataModel);
-        }
+            }else if ("getvideoListInfo".equals(event.url)){
+//                VoideInfoListBean classDataModel= (VoideInfoListBean) event.data;
+//                showGridView(classDataModel);
+            }
     }
 }

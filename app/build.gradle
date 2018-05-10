@@ -15,6 +15,11 @@ android {
         versionCode rootProject.ext.app.versionCode
         versionName rootProject.ext.app.versionName
 
+        ndk {
+            //设置支持的SO库架构
+            abiFilters 'armeabi' //, 'x86', 'armeabi-v7a', 'x86_64', 'arm64-v8a'
+        }
+
 //        jackOptions {
 //            enabled false
 //        }
@@ -44,7 +49,7 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled true
+            minifyEnabled false
             //是否清理无用资源
             shrinkResources false
             //是否启用zipAlign压缩
@@ -93,4 +98,8 @@ dependencies {
 //    //完整版引入
 //    compile 'com.shuyu:GSYVideoPlayer:4.1.2'
     compile 'com.android.support:multidex:1.0.0'
+    //注释掉原有bugly的仓库
+    //compile 'com.tencent.bugly:crashreport:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.3.2
+    compile 'com.tencent.bugly:crashreport_upgrade:latest.release'//其中latest.release指代最新版本号，也可以指定明确的版本号，例如1.2.0
+    compile 'com.tencent.bugly:nativecrashreport:latest.release' //其中latest.release指代最新版本号，也可以指定明确的版本号，例如2.2.0
 }

@@ -20,11 +20,11 @@ import java.util.List;
  */
 public class GridViewAdapter extends BaseAdapter {
 
-    List<VoideInfoListBean.ListBean> videoBriefsList;
+    List<VoideInfoListBean> videoBriefsList;
     private Context context;
 
 
-    public GridViewAdapter(List<VoideInfoListBean.ListBean> videoBriefsList, Context context) {
+    public GridViewAdapter(List<VoideInfoListBean> videoBriefsList, Context context) {
         this.videoBriefsList = videoBriefsList;
         this.context = context;
     }
@@ -55,7 +55,7 @@ public class GridViewAdapter extends BaseAdapter {
             holder = new ViewHolder(view);
             view.setTag(holder);
         }
-        VoideInfoListBean.ListBean videoBriefs = videoBriefsList.get(position);
+        VoideInfoListBean videoBriefs = videoBriefsList.get(position);
 //        ImageLoader.getInstance().displayImage(AppConstant.RESOURCE + videoBriefs.getPicturePath(),holder.lemon_grid_img,options);
 //        holder.lemon_grid_textView.setText(videoBriefs);
         Glide.with(context).load(videoBriefs.getPic()).into(holder.lemon_grid_img);

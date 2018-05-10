@@ -6,7 +6,7 @@ ext {
     //app配置
     app = [
             appVerCode       : 1,
-            appVerName       : "0.0.1" + "-${releaseTime()}",
+            appVerName       : "0.0.2",
             applicationId    : "com.yj.njh.action",
             versionNameSuffix: getCurrentVersionSuffix(),
             minSdkVersion    : 16
@@ -22,10 +22,10 @@ ext {
             targetCompatibilityVersion: JavaVersion.VERSION_1_8
     ]
     store = [
-            storeKey     : '../doc//key/Ckey.jks',
-            storePassword: '20171110',
-            keyAlias     : 'key0',
-            keyPassword  : '20171110'
+            storeKey     : '../doc/key/mdr.jks',
+            storePassword: 'mdr2018510',
+            keyAlias     : 'key1',
+            keyPassword  : 'mdr2018510'
     ]
 
     dependencies = [

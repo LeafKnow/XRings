@@ -3,6 +3,7 @@ package com.yj.njh.ret.http.Api;
 
 import com.yj.njh.ret.http.bean.HotTopicTjBean;
 import com.yj.njh.ret.http.bean.VoideClassTJBean;
+import com.yj.njh.ret.http.bean.VoideInfoListBean;
 import com.yj.njh.ret.http.retrofit.HttpResponse;
 
 import java.util.List;
@@ -40,5 +41,11 @@ public interface PhoneApi {
      */
     @GET("select.php")
     Observable<List<HotTopicTjBean>> selectInfo();
-
+    /**
+     * 获取视频列表
+     * @param request
+     * @return
+     */
+    @GET("videolist.php")
+    Observable<List<VoideInfoListBean>> getvideoListInfo(@QueryMap Map<String, Object> request);
 }

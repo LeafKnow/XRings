@@ -43,7 +43,7 @@ public class LoginAction extends ActionsCreator {
                 act,true, "getvideotype");
     }
     public void getvideoListInfo(Map<String,Object> params,BaseFluxActivity act) {
-        reqDate(ServiceManager.create1(PhoneApi1.class).getvideoListInfo(params),
+        reqDate(ServiceManager.create(PhoneApi.class).getvideoListInfo(params),
                 act,true, "getvideoListInfo");
     }
 }
